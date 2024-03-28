@@ -347,7 +347,7 @@
 
         // Define variables and initialize map
         var map = L.map('map', { attributionControl: false }).setView([37.090240, -95.712891], 5);
-        var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        var tiles = L.tileLayer('https://tile.jawg.io/jawg-lagoon/{z}/{x}/{y}{r}.png?access-token=gHWJrpl2mGtu2cRBVNLnIotJ3e5akZPopxlVHnUfb9UqDWN2uijfNMPtXS4JvzvG', {
             maxZoom: 19,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
