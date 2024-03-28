@@ -127,23 +127,24 @@
 
         .legend {
             line-height: 18px;
-            color: #383434;
+            color: #000000;
+            background: transparent; /* Make legend background clear */
+            padding: 0px; /* Adjust padding if needed */
+            box-shadow: none; /* Remove any box-shadow if present */
         }
         .legend i {
             width: 18px;
             height: 18px;
             display: inline-block; /* Change from float to inline-block */
-            margin-right: 8px;
+            color: #000000;
+            margin-right: 0px;
             opacity: 1;
         }
 
         .info.legend {
-            max-width: 200px; /* Adjust this value to control the width of the legend */
-            padding: 6px 8px;
-            background: white;
-            background: rgba(255,255,255,0.8);
-            box-shadow: 0 0 15px rgba(0,0,0,0.2);
-            border-radius: 5px;
+            max-width: 300px;
+            padding: 0px 0px;
+            background: transparent; /* Make the background fully transparent */
         }
 
         /* Custom CSS for Leaflet popup */
@@ -585,23 +586,25 @@
             grades = [14000, 30000, 50000, 70000, 90000, 120000, 150000]; // Example thresholds
             colors = ['#0000ff', '#9fc5e8', '#f5f5f5', '#f4a582', '#b2182b', '#ff4040', '#8b0000'];
         }
-        else if (type === 'priceToIncome') {
-            grades = [1, 2, 3, 4, 6, 8, 10]; // Example thresholds
-            colors = ['#0000ff', '#9fc5e8', '#f5f5f5', '#f4a582', '#b2182b', '#ff4040', '#8b0000'];
-        }
         // Add more conditions for other types
     
-        var labels = [];
-        // Generate a label with a colored square for each interval
-        for (var i = 0; i < grades.length; i++) {
-            labels.push(
-                '<i style="background:' + colors[i] + '; width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7;"></i> ' +
-                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+'));
+        var labels = ['<div style="display: flex; align-items: center; justify-content: space-between;">'];
+            // Generate a label with a colored square for each interval
+            for (var i = 0; i < grades.length; i++) {
+                labels.push(
+                    '<div style="text-align: center; flex-grow: 1;">' +
+                    '<i style="background:' + colors[i] + '; width: 18px; height: 18px; display: inline-block; margin: 0 auto; opacity: 0.7;"></i>'
+                );
+                if (i === 0 || i === grades.length - 1 || (grades[i + 1])) { // Check for start, end, and middle values
+                    labels.push('<br><span style="font-size: 10px;">' + grades[i] + '</span>');
+                }
+                labels.push('</div>');
+            }
+            labels.push('</div>');
+        
+            var legendDiv = legend.getContainer();
+            legendDiv.innerHTML = '<h4 style="color: black;">Legend</h4>' + labels.join('');
         }
-    
-        var legendDiv = legend.getContainer();
-        legendDiv.innerHTML = '<h4>Legend</h4>' + labels.join('<br>');
-    }
 
     </script>
 </body>
