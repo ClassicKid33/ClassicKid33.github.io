@@ -13,7 +13,7 @@
     crossorigin=""></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.1/chroma.min.js"></script>
-    <script src="us_countiesdata5.geojson"></script>
+    <script src="us_countiesdata6.geojson"></script>
     <style>
 
         * {
@@ -477,7 +477,7 @@
      // Define map, tiles, popup, and countiesLayer variables
 
      function loadData() {
-        countiesLayer = L.geoJSON.ajax('us_countiesdata5.geojson', {
+        countiesLayer = L.geoJSON.ajax('us_countiesdata6.geojson', {
             style: function(feature) {
                 // Determine the value based on the currentPriceType
                 var value;
@@ -539,16 +539,13 @@
         updateLegend('home'); // Move this call here to ensure it's executed after the map is fully loaded
     }
 
-    // Call the loadData function to load data and create layers
-    //loadData();
-
     // Define updatePopupContent function
     function updatePopupContent(layer) {
         var homePrice = layer.feature.properties["ZillowHomePrices CSV_homePrices"];
         var rentPrice = layer.feature.properties["Zillow RentPrices _rentPrices"];
         var medianIncome = layer.feature.properties["medianincome_MedianIncome"];
         var unemploymentRate = layer.feature.properties["unemploymentrate_Uemployment"]; // Assuming this is the property name
-        var popupContent = "<h4>" + layer.feature.properties.NAME + "</h4>";
+        var popupContent = "<h4>" + layer.feature.properties.CountyNames_NAMECOUNTY + "</h4>";
     
         if (currentPriceType === 'home' && homePrice) {
             popupContent += "<p>Home Price: $" + homePrice.toLocaleString() + "</p>";
