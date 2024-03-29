@@ -465,6 +465,12 @@
                 // Retrieve the unemployment rate from the feature's properties
                 value = feature.properties["unemploymentrate_Uemployment"];
             }
+            /*if (value == null || value === undefined) { // Check if there's no data
+                return {
+                    fillOpacity: 0, // No fill
+                    opacity: 0.5, // No outline
+                };
+             } */
             var color = getColor(value, currentPriceType);
             return {
                 fillColor: color,
@@ -479,18 +485,27 @@
      function loadData() {
         countiesLayer = L.geoJSON.ajax('us_countiesdata6.geojson', {
             style: function(feature) {
-                // Determine the value based on the currentPriceType
                 var value;
+                // Example for 'home' price type, extend logic for other types similarly
                 if (currentPriceType === 'home') {
                     value = feature.properties["ZillowHomePrices CSV_homePrices"];
                 } else if (currentPriceType === 'rent') {
                     value = feature.properties["Zillow RentPrices _rentPrices"];
                 } else if (currentPriceType === 'income') {
                     value = feature.properties["medianincome_MedianIncome"];
-                } else if (currentPriceType === 'unemployment') { // Added condition for unemployment
-                    value = feature.properties["unemploymentrate_Uemployment"]; // Make sure this matches your GeoJSON property name
+                } else if (currentPriceType === 'unemployment') {
+                    value = feature.properties["unemploymentrate_Uemployment"];
                 }
-                var color = getColor(value, currentPriceType); // Use the modified getColor function
+                // Add similar conditions for other price types...
+    
+                if (value == null || value === undefined) { // Check if there's no data
+                    return {
+                        fillOpacity: 0, // No fill
+                        opacity: 0, // No outline
+                    };
+                }
+    
+                var color = getColor(value, currentPriceType);
                 return {
                     fillColor: color,
                     weight: 1.3,
@@ -500,37 +515,48 @@
                 };
             },
             onEachFeature: function (feature, layer) {
-                updatePopupContent(layer);
-                // Add event listeners
-                layer.on({
-                    mouseover: function(e) {
-                        var layer = e.target;
-                        var latlng = e.latlng;
-                        layer.setStyle({
-                            weight: 4,
-                            color: '#000000',
-                            dashArray: '',
-                            fillOpacity: 0.7
-                        });
-                        popup.setContent(layer.getPopup().getContent());
-                        popup.setLatLng(latlng).openOn(map);
-                        layer.bringToFront();
-                    },
-                    mousemove: function(e) {
-                        var latlng = e.latlng;
-                        popup.setLatLng(latlng);
-                    },
-                    mouseout: function(e) {
-                        var layer = e.target;
-                        var styleOptions = style(layer.feature); // Call the style function with the feature to get current style options
-                        layer.setStyle(styleOptions); // Apply the style options
-                        map.closePopup();
-                    },
-                    click: function(e) {
-                        var layer = e.target;
-                        map.fitBounds(layer.getBounds());
-                    }
-                });
+                var hasData = false;
+                // Assuming 'home' price type for demonstration, extend logic for other types
+                var homePrice = feature.properties["ZillowHomePrices CSV_homePrices"];
+                var rentPrice = feature.properties["Zillow RentPrices _rentPrices"];
+                var medianIncome = feature.properties["medianincome_MedianIncome"];
+                var unemploymentRate = feature.properties["unemploymentrate_Uemployment"];
+    
+                if (homePrice != null && homePrice !== undefined) { // Check if there's data
+                    hasData = true;
+                }
+                
+                if (hasData) {
+                    updatePopupContent(layer); // Bind popup only if there's data
+                    // Add event listeners for mouseover, mousemove, mouseout, click...
+                    layer.on({
+                        mouseover: function(e) {
+                            var layer = e.target;
+                            var latlng = e.latlng;
+                            layer.setStyle({
+                                weight: 4,
+                                color: '#000000',
+                                dashArray: '',
+                                fillOpacity: 0.7
+                            });
+                            popup.setContent(layer.getPopup().getContent());
+                            popup.setLatLng(latlng).openOn(map);
+                            layer.bringToFront();
+                        },
+                        mousemove: function(e) {
+                            var latlng = e.latlng;
+                            popup.setLatLng(latlng);
+                        },
+                        mouseout: function(e) {
+                            countiesLayer.resetStyle(e.target);
+                            map.closePopup();
+                        },
+                        click: function(e) {
+                            var layer = e.target;
+                            map.fitBounds(layer.getBounds());
+                        }
+                    });
+                }
             }
         }).addTo(map);
         // Set home prices as default when page is loaded
