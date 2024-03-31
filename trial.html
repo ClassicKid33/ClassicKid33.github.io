@@ -347,7 +347,7 @@
 
         // Define variables and initialize map
         var map = L.map('map', { attributionControl: false }).setView([37.090240, -95.712891], 5);
-        var tiles = L.tileLayer('https://tile.jawg.io/jawg-lagoon/{z}/{x}/{y}{r}.png?access-token=8om4J88dB6CkpCQtZdIrBlbkxNFgOdSHDwbFKGqn7fMZw9a7k3aVbeX2INhRYvxd', {
+        var tiles = L.tileLayer('https://tile.jawg.io/3d99309d-9769-4bc5-9a91-6e11db5d07e5/{z}/{x}/{y}{r}.png?access-token=8om4J88dB6CkpCQtZdIrBlbkxNFgOdSHDwbFKGqn7fMZw9a7k3aVbeX2INhRYvxd', {
             maxZoom: 19,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
@@ -381,42 +381,42 @@
         function getColor(value, type) {
             if (type === 'home') {
                 // Return color based on home price
-                return value > 450000 ? '#E74C3C' :
-                        value > 300000  ? '#F1948A' :
-                        value > 230000   ? '#FADBD8' :
+                return value > 450000 ? '#fe0100' :
+                        value > 300000  ? '#ff8174' :
+                        value > 230000   ? '#fedfd7' :
                         value > 170000 ? '#FFFFFF' :
-                        value > 140000 ? '#AEC2FF' :
-                        value > 120000   ? '#7B9BFF' :
-                        value > 30000   ? '#3062FF' :
+                        value > 140000 ? '#d9daf8' :
+                        value > 120000   ? '#9296fa' :
+                        value > 30000   ? '#0000ff' :
                        'transparent';
             } else if (type === 'rent') {
                 // Return color based on rent price
-                return value > 2500 ? '#E74C3C' :
-                        value > 2000 ? '#F1948A' :
-                        value > 1400 ? '#FADBD8' :
+                return value > 2500 ? '#fe0100' :
+                        value > 2000 ? '#ff8174' :
+                        value > 1400 ? '#fedfd7' :
                         value > 1200 ? '#FFFFFF' :
-                        value > 1100 ? '#AEC2FF' :
-                        value > 900 ? '#7B9BFF' :
-                        value > 400  ? '#3062FF' :
+                        value > 1100 ? '#d9daf8' :
+                        value > 900 ? '#9296fa' :
+                        value > 400  ? '#0000ff' :
                        'transparent';
             }
             else if (type === 'income') {
-                return value > 150000 ? '#8b0000' :
-                       value > 120000 ? '#ff4040' :
-                       value > 90000 ? '#b2182b' :
-                       value > 70000 ? '#f4a582' :
-                       value > 50000 ? '#f5f5f5' :
-                       value > 30000 ? '#9fc5e8' :
+                return value > 90000 ? '#fe0100' :
+                       value > 75000 ? '#ff8174' :
+                       value > 60000 ? '#fedfd7' :
+                       value > 50000 ? '#f4a582' :
+                       value > 40000 ? '#d9daf8' :
+                       value > 30000 ? '#9296fa' :
                        value > 14000 ? '#0000ff' :
                        'transparent';
             }
             else if (type === 'priceToIncome') {
-                return value > 10 ? '#8b0000' :
-                       value > 8 ? '#ff4040' :
-                       value > 6 ? '#b2182b' :
+                return value > 10 ? '#fe0100' :
+                       value > 8 ? '#ff8174' :
+                       value > 6 ? '#fedfd7' :
                        value > 4 ? '#f4a582' :
-                       value > 3 ? '#f5f5f5' :
-                       value > 2 ? '#9fc5e8' :
+                       value > 3 ? '#d9daf8' :
+                       value > 2 ? '#9296fa' :
                        value > 1 ? '#0000ff' :
                        'transparent';
             }
