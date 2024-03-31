@@ -347,7 +347,7 @@
 
         // Define variables and initialize map
         var map = L.map('map', { attributionControl: false }).setView([37.090240, -95.712891], 5);
-        var tiles = L.tileLayer('https://tile.jawg.io/1f6a8f25-78c4-41aa-81d2-8827d4dedffb/{z}/{x}/{y}{r}.png?access-token=8om4J88dB6CkpCQtZdIrBlbkxNFgOdSHDwbFKGqn7fMZw9a7k3aVbeX2INhRYvxd', {
+        var tiles = L.tileLayer('https://tile.jawg.io/jawg-lagoon/{z}/{x}/{y}{r}.png?access-token=8om4J88dB6CkpCQtZdIrBlbkxNFgOdSHDwbFKGqn7fMZw9a7k3aVbeX2INhRYvxd', {
             maxZoom: 19,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
@@ -381,13 +381,13 @@
         function getColor(value, type) {
             if (type === 'home') {
                 // Return color based on home price
-                return value > 900000 ? '#8b0000' :
-                        value > 600000  ? '#ff4040' :
-                        value > 500000   ? '#b2182b' :
-                        value > 350000 ? '#f4a582' :
-                        value > 250000? '#f5f5f5' :
-                        value > 100000   ? '#9fc5e8' :
-                        value > 30000   ? '#0000ff' :
+                return value > 900000 ? '#E74C3C' :
+                        value > 600000  ? '#F1948A' :
+                        value > 320000   ? '#FADBD8' :
+                        value > 200000 ? '#f4a582' :
+                        value > 170000? '#AEC2FF' :
+                        value > 120000   ? '#7B9BFF' :
+                        value > 30000   ? '#3062FF' :
                        'transparent';
             } else if (type === 'rent') {
                 // Return color based on rent price
