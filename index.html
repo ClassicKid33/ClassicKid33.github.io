@@ -465,14 +465,14 @@
                 value = feature.properties["unemploymentrate_Uemployment"];
             }
             // Check if the value is undefined, null, or any other value that indicates the absence of information
-             if (value === undefined || value === null || value === '') {
-             // Reduce the opacity for counties without information
+            if (value === undefined || value === null || value === '' || (currentPriceType === 'rentalYield' && value === 0)) {
+                // Reduce the opacity for counties without information or with no rental yield data
                 return {
-                    fillColor: 'rgba(128, 128, 128, 0.4)', // Grey color with 0.1 opacity
+                    fillColor: 'rgba(128, 128, 128, 0.4)', // Light grey color
                     weight: 1.3,
-                    opacity: 0.5, // Reduced opacity for the outline
+                    opacity: 0.5, // Lower opacity for the outline
                     color: 'black',
-                    fillOpacity: 0.4
+                    fillOpacity: 0.4 // Low fill opacity
                 };
             }
             var color = getColor(value, currentPriceType);
