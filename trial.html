@@ -379,7 +379,11 @@
         var countiesLayer;
 
         function getColor(value, type) {
-            console.log("Value:", value, "Type:", type); // Debugging line
+            // Check if the value is undefined, null, or any other value that indicates the absence of information
+            if (value === undefined || value === null || value === '') {
+                // Return a grey color with opacity 0.1 for counties without information
+                return 'rgba(128, 128, 128, 0.6)'; // Grey color with 0.1 opacity
+    }
             if (type === 'home') {
                 // Return color based on home price
                 return value > 900000 ? '#8b0000' :
