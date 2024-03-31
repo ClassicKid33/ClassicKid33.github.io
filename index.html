@@ -487,6 +487,7 @@
      // Define map, tiles, popup, and countiesLayer variables
 
      function loadData() {
+        var processedFeatures = 0;
         countiesLayer = L.geoJSON.ajax('us_countiesdata6.geojson', {
             style: function(feature) {
                 // Determine the value based on the currentPriceType
@@ -500,6 +501,19 @@
                 } else if (currentPriceType === 'unemployment') { // Added condition for unemployment
                     value = feature.properties["unemploymentrate_Uemployment"]; // Make sure this matches your GeoJSON property name
                 }
+
+                // Check if the value is undefined, null, or any other value that indicates the absence of information
+                if (value === undefined || value === null || value === '') {
+                    // Return the style for counties without information
+                    return {
+                    fillColor: 'rgba(128, 128, 128, 0.4)', // Light grey color
+                    weight: 1.3,
+                    opacity: 0.5, // Lower opacity for the outline
+                    color: 'black', 
+                    fillOpacity: 0.4 // Low fill opacity
+                    };
+                }
+
                 var color = getColor(value, currentPriceType); // Use the modified getColor function
                 return {
                     fillColor: color,
