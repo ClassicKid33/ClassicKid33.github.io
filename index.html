@@ -487,7 +487,6 @@
      // Define map, tiles, popup, and countiesLayer variables
 
      function loadData() {
-        var processedFeatures = 0;
         countiesLayer = L.geoJSON.ajax('us_countiesdata6.geojson', {
             style: function(feature) {
                 // Determine the value based on the currentPriceType
