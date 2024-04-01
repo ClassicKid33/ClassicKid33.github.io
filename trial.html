@@ -148,7 +148,7 @@
         }
 
         /* Custom CSS for Leaflet popup */
-        .leaflet-popup-content-wrapper {
+        .leaflet-popup-content {
             background-color: black;
             color: white;
             border-radius: 0px; /* Rounded corners */
@@ -157,34 +157,37 @@
             height: 75px; /* Set a smaller height */
             font-size: 10px; /* Adjust font size */
         }
-
+        
         .popup-header {
-            padding: 0px;
-            font-size: 13px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
         }
         
         .popup-body {
             display: flex;
             justify-content: space-between;
-            padding: 0 10px;
-            font-size: 8px;
+            align-items: flex-end;
+            margin-top: auto;
+            padding-bottom: 5px; /* Add padding at the bottom */
         }
         
         .density-label {
             margin: 0;
+            font-size: 12px;
         }
         
         .density-value {
             margin: 0;
-            text-align: right;
+            font-size: 12px;
+            font-weight: bold;
         }
 
-        /* Add the following code to your CSS file */
-
-        .leaflet-popup-content {
-            padding: 0px; /* Increase the padding */
-            font-size: 11px; /* Adjust the font size */
-            line-height: 0.1; /* Adjust the line height */
+        .leaflet-popup-content-wrapper {
+            background-color: black;
+            color: white;
+            border-radius: 0px;
+            box-shadow: 0 0 0px rgba(0, 0, 0, 0);
         }
 
         .leaflet-popup-tip-container {
@@ -581,41 +584,41 @@
     // Define updatePopupContent function
     function updatePopupContent(layer) {
         // Extract property values from the layer's feature
-        var countyName = layer.feature.properties.CountyNames_NAMECOUNTY;
         var homePrice = layer.feature.properties["ZillowHomePrices CSV_homePrices"];
         var rentPrice = layer.feature.properties["Zillow RentPrices _rentPrices"];
         var medianIncome = layer.feature.properties["medianincome_MedianIncome"];
         var unemploymentRate = layer.feature.properties["unemploymentrate_Uemployment"];
-      
+    
         // Start building the popup content string with the county name
-        var popupContent = "<h4>" + layer.feature.properties.CountyNames_NAMECOUNTY + "</h4>";
-      
+        var popupContent = "<div class='popup-header'>" + layer.feature.properties.CountyNames_NAMECOUNTY + "</div>";
+    
         // Conditionally append information based on the currentPriceType
         if (currentPriceType === 'home' && homePrice) {
-          popupContent += "<p>Home Price: $" + homePrice.toLocaleString() + "</p>";
+            popupContent += "<div class='popup-body'><p class='density-label'>Home Price:</p><p class='density-value'>$" + homePrice.toLocaleString() + "</p></div>";
         } else if (currentPriceType === 'rent' && rentPrice) {
-          popupContent += "<p>Rent Price: $" + rentPrice.toLocaleString() + "</p>";
+            popupContent += "<div class='popup-body'><p class='density-label'>Rent Price:</p><p class='density-value'>$" + rentPrice.toLocaleString() + "</p></div>";
         } else if (currentPriceType === 'income' && medianIncome) {
-          popupContent += "<p>Income: $" + medianIncome.toLocaleString() + "</p>";
+            popupContent += "<div class='popup-body'><p class='density-label'>Income:</p><p class='density-value'>$" + medianIncome.toLocaleString() + "</p></div>";
         } else if (currentPriceType === 'priceToIncome' && homePrice && medianIncome) {
-          var priceToIncomeRatio = (homePrice / medianIncome).toFixed(2);
-          popupContent += "<p>Price/Income: " + priceToIncomeRatio + "</p>";
+            var priceToIncomeRatio = (homePrice / medianIncome).toFixed(2);
+            popupContent += "<div class='popup-body'><p class='density-label'>Price/Income:</p><p class='density-value'>" + priceToIncomeRatio + "</p></div>";
         } else if (currentPriceType === 'rentalYield' && homePrice && rentPrice) {
-          var rentalYield = ((rentPrice / homePrice) * 100).toFixed(2);
-          popupContent += "<p>Rental Yield: " + rentalYield + "%</p>";
+            var rentalYield = ((rentPrice / homePrice) * 100).toFixed(2);
+            popupContent += "<div class='popup-body'><p class='density-label'>Rental Yield:</p><p class='density-value'>" + rentalYield + "%</p></div>";
         } else if (currentPriceType === 'unemployment' && unemploymentRate) {
-          popupContent += "<p>Unemployment: " + unemploymentRate + "%</p>";
+            popupContent += "<div class='popup-body'><p class='density-label'>Unemployment:</p><p class='density-value'>" + unemploymentRate + "%</p></div>";
         }
-      
+    
         // Check if there is any relevant data before binding the popup
-        if (popupContent !== "<h4>" + layer.feature.properties.CountyNames_NAMECOUNTY + "</h4>") {
-          // Bind the constructed content to the popup of the layer
-          layer.bindPopup(popupContent);
+        if (popupContent !== "<div class='popup-header'>" + layer.feature.properties.CountyNames_NAMECOUNTY + "</div>") {
+            // Bind the constructed content to the popup of the layer
+            layer.bindPopup(popupContent);
         } else {
-          // Remove any existing popup if there is no relevant data
-          layer.unbindPopup();
+            // Remove any existing popup if there is no relevant data
+            layer.unbindPopup();
         }
-      }
+    }
+    
 
 
 
