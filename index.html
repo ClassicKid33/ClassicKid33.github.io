@@ -532,11 +532,24 @@
                         var value;
                         if (currentPriceType === 'home') {
                             value = layer.feature.properties["ZillowHomePrices CSV_homePrices"];
+                        } else if (currentPriceType === 'rent') {
+                            value = layer.feature.properties["Zillow RentPrices _rentPrices"];
+                        } else if (currentPriceType === 'income') {
+                            value = layer.feature.properties["medianincome_MedianIncome"];
+                        } else if (currentPriceType === 'unemployment') {
+                            value = layer.feature.properties["unemploymentrate_Uemployment"];
+                        } else if (currentPriceType === 'priceToIncome') {
+                            var homePrice = layer.feature.properties["ZillowHomePrices CSV_homePrices"];
+                            var medianIncome = layer.feature.properties["medianincome_MedianIncome"];
+                            value = medianIncome > 0 ? homePrice / medianIncome : 0;
+                        } else if (currentPriceType === 'rentalYield') {
+                            var homePrice = layer.feature.properties["ZillowHomePrices CSV_homePrices"];
+                            var rentPrice = layer.feature.properties["Zillow RentPrices _rentPrices"];
+                            value = homePrice && rentPrice ? (rentPrice / homePrice) * 100 : 0;
                         }
-                        // Add similar checks for other price types if needed
-    
+            
                         // Check if the county has no data
-                        if (value === undefined || value === null || value === '') {
+                        if (value === undefined || value === null || value === '' || (currentPriceType === 'rentalYield' && value === 0)) {
                             // Set the weight to 0 to remove the outline
                             layer.setStyle({
                                 weight: 0,
@@ -581,40 +594,45 @@
     // Define updatePopupContent function
     function updatePopupContent(layer) {
         // Extract property values from the layer's feature
+        var countyName = layer.feature.properties.CountyNames_NAMECOUNTY;
         var homePrice = layer.feature.properties["ZillowHomePrices CSV_homePrices"];
         var rentPrice = layer.feature.properties["Zillow RentPrices _rentPrices"];
         var medianIncome = layer.feature.properties["medianincome_MedianIncome"];
         var unemploymentRate = layer.feature.properties["unemploymentrate_Uemployment"];
-      
-        // Start building the popup content string with the county name
-        var popupContent = "<h4>" + layer.feature.properties.CountyNames_NAMECOUNTY + "</h4>";
-      
+    
+        // Building the popup content string with the county name and home price
+        var popupContent = "<div style='min-width: 200px;'>" + // Ensure minimum width for the popup
+            "<h4 style='margin-top: 15px; margin-bottom: 30px;'>" + countyName + "</h4>"; // County name with some bottom margin
+    
         // Conditionally append information based on the currentPriceType
         if (currentPriceType === 'home' && homePrice) {
-          popupContent += "<p>Home Price: $" + homePrice.toLocaleString() + "</p>";
+            popupContent += "<p style='margin-bottom: 15px;'>Home Price: $" + homePrice.toLocaleString() + "</p>";
         } else if (currentPriceType === 'rent' && rentPrice) {
-          popupContent += "<p>Rent Price: $" + rentPrice.toLocaleString() + "</p>";
+            popupContent += "<p style='margin-bottom: 15px;'>Rent Price: $" + rentPrice.toLocaleString() + "</p>";
         } else if (currentPriceType === 'income' && medianIncome) {
-          popupContent += "<p>Income: $" + medianIncome.toLocaleString() + "</p>";
+            popupContent += "<p style='margin-bottom: 15px;'>Income: $" + medianIncome.toLocaleString() + "</p>";
         } else if (currentPriceType === 'priceToIncome' && homePrice && medianIncome) {
-          var priceToIncomeRatio = (homePrice / medianIncome).toFixed(2);
-          popupContent += "<p>Price/Income: " + priceToIncomeRatio + "</p>";
+            var priceToIncomeRatio = (homePrice / medianIncome).toFixed(2);
+            popupContent += "<p style='margin-bottom: 15px;'>Price/Income: " + priceToIncomeRatio + "</p>";
         } else if (currentPriceType === 'rentalYield' && homePrice && rentPrice) {
-          var rentalYield = ((rentPrice / homePrice) * 100).toFixed(2);
-          popupContent += "<p>Rental Yield: " + rentalYield + "%</p>";
+            var rentalYield = ((rentPrice / homePrice) * 100).toFixed(2);
+            popupContent += "<p style='margin-bottom: 15px;'>Rental Yield: " + rentalYield + "%</p>";
         } else if (currentPriceType === 'unemployment' && unemploymentRate) {
-          popupContent += "<p>Unemployment: " + unemploymentRate + "%</p>";
+            popupContent += "<p style='margin-bottom: 15px;'>Unemployment: " + unemploymentRate + "%</p>";
         }
-      
+    
+        popupContent += "</div>"; // Close the popup content div
+    
         // Check if there is any relevant data before binding the popup
-        if (popupContent !== "<h4>" + layer.feature.properties.CountyNames_NAMECOUNTY + "</h4>") {
-          // Bind the constructed content to the popup of the layer
-          layer.bindPopup(popupContent);
+        if (popupContent !== "<div style='min-width: 200px;'><h4 style='margin-top: 15px; margin-bottom: 30px;'>" + countyName + "</h4></div>") {
+            // Bind the constructed content to the popup of the layer
+            layer.bindPopup(popupContent);
         } else {
-          // Remove any existing popup if there is no relevant data
-          layer.unbindPopup();
+            // Remove any existing popup if there is no relevant data
+            layer.unbindPopup();
         }
-      }
+    }
+    
 
 
 
