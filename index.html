@@ -153,7 +153,7 @@
             color: white;
             border-radius: 0px; /* Rounded corners */
             box-shadow: 0 0 0px rgba(0, 0, 0, 0.5); /* Add shadow */
-            width: 200px; /* Set a smaller width */
+            width: 210px; /* Set a smaller width */
             height: 75px; /* Set a smaller height */
             font-size: 10px; /* Adjust font size */
         }
@@ -530,12 +530,28 @@
                     mouseover: function(e) {
                         var layer = e.target;
                         var latlng = e.latlng;
-                        layer.setStyle({
-                            weight: 4,
-                            color: '#000000',
-                            dashArray: '',
-                            fillOpacity: 0.7
-                        });
+                        var value;
+                        if (currentPriceType === 'home') {
+                            value = layer.feature.properties["ZillowHomePrices CSV_homePrices"];
+                        }
+                        // Add similar checks for other price types if needed
+    
+                        // Check if the county has no data
+                        if (value === undefined || value === null || value === '') {
+                            // Set the weight to 0 to remove the outline
+                            layer.setStyle({
+                                weight: 0,
+                                fillOpacity: 0.7
+                            });
+                        } else {
+                            // For counties with data, apply the normal hover styling
+                            layer.setStyle({
+                                weight: 4,
+                                color: '#000000',
+                                dashArray: '',
+                                fillOpacity: 0.7
+                            });
+                        }
                         popup.setContent(layer.getPopup().getContent());
                         popup.setLatLng(latlng).openOn(map);
                         layer.bringToFront();
