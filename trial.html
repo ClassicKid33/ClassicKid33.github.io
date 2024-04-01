@@ -581,6 +581,7 @@
     // Define updatePopupContent function
     function updatePopupContent(layer) {
         // Extract property values from the layer's feature
+        var countyName = layer.feature.properties.CountyNames_NAMECOUNTY;
         var homePrice = layer.feature.properties["ZillowHomePrices CSV_homePrices"];
         var rentPrice = layer.feature.properties["Zillow RentPrices _rentPrices"];
         var medianIncome = layer.feature.properties["medianincome_MedianIncome"];
