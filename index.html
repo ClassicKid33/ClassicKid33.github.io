@@ -147,27 +147,42 @@
             background: transparent; /* Make the background fully transparent */
         }
 
-        /* Custom CSS for Leaflet popup */
+        /* Custom CSS for Leaflet popup ----------------------------------------------------------*/
         .leaflet-popup-content-wrapper {
             background-color: black;
             color: white;
-            border-radius: 0px; /* Rounded corners */
+            border-radius: 5px; /* Rounded corners */
             box-shadow: 0 0 0px rgba(0, 0, 0, 0.5); /* Add shadow */
-            width: 210px; /* Set a smaller width */
-            height: 65px; /* Set a smaller height */
+            width: 200px; /* Set a smaller width */
+            height: 60px; /* Set a smaller height */
             font-size: 10px; /* Adjust font size */
         }
 
+        .popup-container {
+            min-width: 200px;
+        }
+        
         .popup-header {
-            padding: 0px;
-            font-size: 13px;
+            color: white; /* Set the text color to white */
+            padding-bottom: 10px; /* Add padding to the header */
+            margin-left: -10px; /* Add negative left margin to move the county name to the left */
+            margin-bottom: 5px;
+            text-align: left; /* Align the county name to the left */
+            font-size: 12px;
         }
         
         .popup-body {
             display: flex;
             justify-content: space-between;
-            padding: 0 10px;
-            font-size: 8px;
+            margin-left: -10px; /* Add negative left margin to move the county name to the left */
+            padding-top: 10px; /* Add padding to the body */
+            font-size: 12px;
+        }
+        
+        .popup-value {
+            margin-left: auto; /* Push the value to the right */
+            margin-right: 30px; /* Add some space on the right to ensure it doesn't overflow */
+            font-size: 12px;
         }
         
         .density-label {
@@ -600,31 +615,30 @@
         var medianIncome = layer.feature.properties["medianincome_MedianIncome"];
         var unemploymentRate = layer.feature.properties["unemploymentrate_Uemployment"];
     
-        // Building the popup content string with the county name and home price
-        var popupContent = "<div style='min-width: 200px;'>" + // Ensure minimum width for the popup
-            "<h4 style='margin-top: 15px; margin-bottom: 30px;'>" + countyName + "</h4>"; // County name with some bottom margin
+        var popupContent = "<div class='popup-container'>" +
+            "<div class='popup-header'>" + countyName + "</div>";
     
         // Conditionally append information based on the currentPriceType
         if (currentPriceType === 'home' && homePrice) {
-            popupContent += "<p style='margin-bottom: 15px;'>Home Price: $" + homePrice.toLocaleString() + "</p>";
+            popupContent += "<div class='popup-body'><span class='density-label'>Home Price:</span> <span class='popup-value'>$" + homePrice.toLocaleString() + "</span></div>";
         } else if (currentPriceType === 'rent' && rentPrice) {
-            popupContent += "<p style='margin-bottom: 15px;'>Rent Price: $" + rentPrice.toLocaleString() + "</p>";
+            popupContent += "<div class='popup-body'><span class='density-label'>Rent Price:</span> <span class='popup-value'>$" + rentPrice.toLocaleString() + "</span></div>";
         } else if (currentPriceType === 'income' && medianIncome) {
-            popupContent += "<p style='margin-bottom: 15px;'>Income: $" + medianIncome.toLocaleString() + "</p>";
+            popupContent += "<div class='popup-body'><span class='density-label'>Income:</span> <span class='popup-value'>$" + medianIncome.toLocaleString() + "</span></div>";
         } else if (currentPriceType === 'priceToIncome' && homePrice && medianIncome) {
             var priceToIncomeRatio = (homePrice / medianIncome).toFixed(2);
-            popupContent += "<p style='margin-bottom: 15px;'>Price/Income: " + priceToIncomeRatio + "</p>";
+            popupContent += "<div class='popup-body'><span class='density-label'>Price/Income:</span> <span class='popup-value'>" + priceToIncomeRatio + "</span></div>";
         } else if (currentPriceType === 'rentalYield' && homePrice && rentPrice) {
             var rentalYield = ((rentPrice / homePrice) * 100).toFixed(2);
-            popupContent += "<p style='margin-bottom: 15px;'>Rental Yield: " + rentalYield + "%</p>";
+            popupContent += "<div class='popup-body'><span class='density-label'>Rental Yield:</span> <span class='popup-value'>" + rentalYield + "%</span></div>";
         } else if (currentPriceType === 'unemployment' && unemploymentRate) {
-            popupContent += "<p style='margin-bottom: 15px;'>Unemployment: " + unemploymentRate + "%</p>";
+            popupContent += "<div class='popup-body'><span class='density-label'>Unemployment:</span> <span class='popup-value'>" + unemploymentRate + "%</span></div>";
         }
     
-        popupContent += "</div>"; // Close the popup content div
+        popupContent += "</div>"; // Close the popup-container div
     
         // Check if there is any relevant data before binding the popup
-        if (popupContent !== "<div style='min-width: 200px;'><h4 style='margin-top: 15px; margin-bottom: 30px;'>" + countyName + "</h4></div>") {
+        if (popupContent !== "<div class='popup-container'><div class='popup-header'>" + countyName + "</div></div>") {
             // Bind the constructed content to the popup of the layer
             layer.bindPopup(popupContent);
         } else {
@@ -632,6 +646,7 @@
             layer.unbindPopup();
         }
     }
+    
     
 
 
