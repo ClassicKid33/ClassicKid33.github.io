@@ -347,9 +347,28 @@
 
         function toggleSection(element) {
             const sectionContent = element.nextElementSibling;
+            const allSections = document.querySelectorAll('.section-content');
+            const allTitles = document.querySelectorAll('.section-title');
+        
+            // Close all other sections
+            allSections.forEach(section => {
+                if (section !== sectionContent) {
+                    section.classList.remove('active');
+                }
+            });
+        
+            // Remove 'active' class from all other titles
+            allTitles.forEach(title => {
+                if (title !== element) {
+                    title.classList.remove('active');
+                }
+            });
+        
+            // Toggle the clicked section
             sectionContent.classList.toggle('active');
             element.classList.toggle('active');
         }
+        
 
         var currentPriceType = 'home'; // Default to 'home'
 
