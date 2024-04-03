@@ -22,7 +22,7 @@
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
+        
         .sidebar {
             position: absolute;
             top: 0;
@@ -30,10 +30,75 @@
             height: 100vh;
             width: 300px;
             background-color: #12171e;
-            padding: .4rem .8rem;
+            padding: 0;
             overflow-y: auto; /* Enables vertical scrolling if content overflows */
         }
 
+        .section-title {
+            background-color: #1c2331; /* Add a background color */
+            padding: 12px 22px; /* Add padding */
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+            border-radius: 0;
+            width: 100%;
+        } 
+        
+        .section-title:hover {
+            background-color: #2c3e50; /* Change the background color on hover */
+            border-radius: 0;
+        }
+
+        .section-title.active {
+            background-color: #2c3e50;
+          }
+          
+          .section-title.active:hover {
+            background-color: #2c3e50;
+          }
+
+        .sidebar-section {
+            /* Remove any margins or padding */
+            margin: 0;
+            padding: 0;
+        }
+
+        .section-title i {
+            transition: transform 0.3s ease;
+            font-size: 18px; /* Increase the font size of the icon */
+            color: #fff; /* Change the color of the icon */
+        }
+        
+        .section-title.active i {
+            transform: rotate(180deg);
+            color: #fff; /* Change the color of the icon when the section is active */
+        }
+
+        .section-title {
+            border-bottom: 1px solid #fff; /* Add a bottom border */
+        }
+        
+        .section-title i {
+            transition: transform 0.3s ease;
+            font-size: 20px;
+            color: #fff;
+        }
+        
+        .section-content {
+            display: none;
+            padding-left: 20px;
+        }
+        
+        .section-content.active {
+            display: block;
+        }
+        
+        .section-title.active i {
+            transform: rotate(180deg);
+            color: #fff;
+        }
 
         .sidebar .top .logo {
             color: #fff;
@@ -43,11 +108,15 @@
             align-items: center;
             pointer-events: none;
             opacity: 1;
+            margin-left: 10px;
+            font-size: 28px;
+            padding-top: 20px;
         } 
 
         .top .logo i {
-            font-size: 3rem;
-            margin-right: 5px;
+            font-size: 3.5rem;
+            margin-right: 20px;
+            padding-top: 5px;
         }
 
         .user {
@@ -73,10 +142,10 @@
         .sidebar ul li {
             position: relative;
             list-style-type: none;
-            height: 50px;
-            width: 90%;
-            margin: 0.8rem auto;
-            line-height: 50px;
+            height: 40px;
+            width: 100%;
+            margin: 0;
+            line-height: 40px;
         }
 
         .sidebar ul li a {
@@ -84,19 +153,24 @@
             display: flex;
             align-items: center;
             text-decoration: none;
-            border-radius: 0.8rem;
+            border-radius: 0;
+            padding-left: 30px; /* Add left padding to create space */
+            width: 100%; /* Adjust the width to account for the padding */
+            height: 100%; /* Add this line to make the anchor fill the entire height of the list item */
         }
 
         .sidebar ul li a:hover {
             background-color: #fff;
-            color:#12171e
+            color: #12171e;
+            padding-left: 30px; /* Add left padding on hover as well */
+            border-radius: 0;
         }
 
         .sidebar ul li a i {
             min-width: 50px;
             text-align: center;
             height: 50px;
-            border-radius: 12px;
+            border-radius: 0;
             line-height: 50px;
         }
 
@@ -265,119 +339,85 @@
             <img src="user-img.jpg" alt="me" class="user-img">
             <div>
                 <p class="bold">Erik O.</p>
-                <p>Admin</p>
+                <p>Pro User</p>
             </div>
         </div>
-        <ul>
-            <li>
-                <a href="#" onclick="togglePrices('home')">
-                    <i class="bx bx-grid-alt"></i>
-                    <span class="tooltip">Home Prices</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="togglePrices('homegrowthMoM')">
-                    <i class="bx bx-grid-alt"></i>
-                    <span class="tooltip">Home Growth MoM</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="togglePrices('homegrowthYoY')">
-                    <i class="bx bx-grid-alt"></i>
-                    <span class="tooltip">Home Growth YoY</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="togglePrices('inventory')">
-                    <i class="bx bx-grid-alt"></i>
-                    <span class="tooltip">For Sale Inventory</span>
-                </a>
-            </li>
-            <!-- Rent Prices button -->
-            <li>
-                <a href="#" onclick="togglePrices('rent')">
-                    <i class="bx bx-grid-alt"></i>
-                    <span class="tooltip">Rent Prices</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="togglePrices('rentalYield')">
-                    <i class="bx bx-grid-alt"></i>
-                    <span class="tooltip">Rental Yield</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="togglePrices('rentalgrowthMoM')">
-                    <i class="bx bx-grid-alt"></i>
-                    <span class="tooltip">Rental Growth MoM</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="togglePrices('rentalYieldYoY')">
-                    <i class="bx bx-grid-alt"></i>
-                    <span class="tooltip">Rental Growth YoY</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="togglePrices('rentalvacancy')">
-                    <i class="bx bx-grid-alt"></i>
-                    <span class="tooltip"> Rental Vacancy Rate</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="togglePrices('income')">
-                    <i class="bx bx-grid-alt"></i>
-                    <span class="tooltip">Median Income</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="togglePrices('priceToIncome')">
-                    <i class="bx bx-grid-alt"></i>
-                    <span class="tooltip">Price to Income Ratio</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="togglePrices('population')">
-                    <i class="bx bx-grid-alt"></i>
-                    <span class="tooltip">Population</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="togglePrices('populationgrowthYoY')">
-                    <i class="bx bx-grid-alt"></i>
-                    <span class="tooltip">Population Growth YoY</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="togglePrices('netmigration')">
-                    <i class="bx bx-grid-alt"></i>
-                    <span class="tooltip">Net Migration (Yearly)</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="togglePrices('unemployment')">
-                    <i class="bx bx-grid-alt"></i>
-                    <span class="tooltip">Unemployment Rate</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="togglePrices('permits')">
-                    <i class="bx bx-grid-alt"></i>
-                    <span class="tooltip">Building Permits</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="togglePrices('propertytax')">
-                    <i class="bx bx-grid-alt"></i>
-                    <span class="tooltip">Property Tax Rate</span>
-                </a>
-            </li>
-        </ul>
+        <div class="sidebar-section">
+            <h3 class="section-title" onclick="toggleSection(this)">Homes <i class="bx bx-chevron-down"></i></h3>
+            <div class="section-content">
+                <ul>
+                    <li><a href="#" onclick="togglePrices('home')">Home Prices</a></li>
+                    <li><a href="#" onclick="togglePrices('homegrowthYoY')">Home Growth YoY</a></li>
+                    <li><a href="#" onclick="togglePrices('homegrowthMoM')">Home Growth MoM</a></li>
+                    <li><a href="#" onclick="togglePrices('inventory')">For Sale Inventory</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="sidebar-section">
+            <h3 class="section-title" onclick="toggleSection(this)">Rentals <i class="bx bx-chevron-down"></i></h3>
+            <div class="section-content">
+                <ul>
+                    <li><a href="#" onclick="togglePrices('rent')">Rent Prices</a></li>
+                    <li><a href="#" onclick="togglePrices('rentalYield')">Rental Yield</a></li>
+                    <li><a href="#" onclick="togglePrices('rentalgrowthMoM')">Rental Growth MoM</a></li>
+                    <li><a href="#" onclick="togglePrices('rentalYieldYoY')">Rental Growth YoY</a></li>
+                    <li><a href="#" onclick="togglePrices('rentalvacancy')">Rental Vacancy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="sidebar-section">
+            <h3 class="section-title" onclick="toggleSection(this)">Demographics <i class="bx bx-chevron-down"></i></h3>
+            <div class="section-content">
+                <ul>
+                    <li><a href="#" onclick="togglePrices('income')">Median Income</a></li>
+                    <li><a href="#" onclick="togglePrices('priceToIncome')">Price to Income Ratio</a></li>
+                    <li><a href="#" onclick="togglePrices('population')">Population</a></li>
+                    <li><a href="#" onclick="togglePrices('populationgrowthYoY')">Population Growth YoY</a></li>
+                    <li><a href="#" onclick="togglePrices('netmigration')">Net Migration</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="sidebar-section">
+            <h3 class="section-title" onclick="toggleSection(this)">Investing <i class="bx bx-chevron-down"></i></h3>
+            <div class="section-content">
+                <ul>
+                    <li><a href="#" onclick="togglePrices('unemployment')">Unemployment Rate</a></li>
+                    <li><a href="#" onclick="togglePrices('permits')">Building Permits</a></li>
+                    <li><a href="#" onclick="togglePrices('propertytax')">Property Tax Rate</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
+    
     
     <div id="map"></div>
 
     <script>
+
+        function toggleSection(element) {
+            const sectionContent = element.nextElementSibling;
+            const allSections = document.querySelectorAll('.section-content');
+            const allTitles = document.querySelectorAll('.section-title');
+          
+            // Close all other sections
+            allSections.forEach(section => {
+              if (section !== sectionContent) {
+                section.classList.remove('active');
+              }
+            });
+          
+            // Remove 'active' class from all other titles
+            allTitles.forEach(title => {
+              if (title !== element) {
+                title.classList.remove('active');
+              }
+            });
+          
+            // Toggle the clicked section
+            sectionContent.classList.toggle('active');
+            element.classList.toggle('active');
+          }
+        
 
         var currentPriceType = 'home'; // Default to 'home'
 
