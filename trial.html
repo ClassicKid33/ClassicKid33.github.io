@@ -14,7 +14,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.1/chroma.min.js"></script>
     <script src="us_countiesdata6.geojson"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
 
         * {
@@ -30,34 +29,35 @@
             left: 0;
             height: 100vh;
             width: 300px;
-            background-color: #12171e;
+            background-color: #f2f2f2;
             padding: 0;
             overflow-y: auto; /* Enables vertical scrolling if content overflows */
         }
 
         .section-title {
-            background-color: #1c2331; /* Add a background color */
+            background-color: #f2f2f2; /* Add a background color */
             padding: 12px 22px; /* Add padding */
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            color: white;
+            color: #171717;
             border-radius: 0;
             width: 100%;
+            font-weight: 500;
         } 
         
         .section-title:hover {
-            background-color: #2c3e50; /* Change the background color on hover */
+            background-color: #cdd3d8; /* Change the background color on hover */
             border-radius: 0;
         }
 
         .section-title.active {
-            background-color: #2c3e50;
+            background-color: #cdd3d8;
           }
           
           .section-title.active:hover {
-            background-color: #2c3e50;
+            background-color: #cdd3d8;
           }
 
         .sidebar-section {
@@ -69,22 +69,22 @@
         .section-title i {
             transition: transform 0.3s ease;
             font-size: 18px; /* Increase the font size of the icon */
-            color: #fff; /* Change the color of the icon */
+            color: #171717; /* Change the color of the icon */
         }
         
         .section-title.active i {
             transform: rotate(180deg);
-            color: #fff; /* Change the color of the icon when the section is active */
+            color: #171717; /* Change the color of the icon when the section is active */
         }
 
         .section-title {
-            border-bottom: 1px solid #fff; /* Add a bottom border */
+            border-bottom: 0.5px solid #a3a3b0; /* Add a bottom border */
         }
         
         .section-title i {
             transition: transform 0.3s ease;
             font-size: 20px;
-            color: #fff;
+            color: #171717;
         }
         
         .section-content {
@@ -98,11 +98,11 @@
         
         .section-title.active i {
             transform: rotate(180deg);
-            color: #fff;
+            color: #171717;
         }
 
         .sidebar .top .logo {
-            color: #fff;
+            color: #171717;
             display: flex;
             height: 50px;
             width: 100%;
@@ -127,7 +127,7 @@
         }
 
         .user p {
-            color: #fff;
+            color: #171717;
             opacity: 1;
             margin-left: 1rem;
         }
@@ -150,7 +150,7 @@
         }
 
         .sidebar ul li a {
-            color: #fff;
+            color: #171717;
             display: flex;
             align-items: center;
             text-decoration: none;
@@ -158,27 +158,14 @@
             padding-left: 30px; /* Add left padding to create space */
             width: 100%; /* Adjust the width to account for the padding */
             height: 100%; /* Add this line to make the anchor fill the entire height of the list item */
-            position: relative;
-            padding-left: 30px;
-        }
-
-        .sidebar ul li a:hover {
-            background-color: #fff;
-            color: #12171e;
-            padding-left: 30px; /* Add left padding on hover as well */
-            border-radius: 0;
         }
 
         .sidebar ul li a i {
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            transition: transform 0.3s ease;
-        }
-
-        .sidebar ul li a:hover i {
-            transform: translateY(-50%) rotate(90deg); /* Rotate the icon 90 degrees on hover */
+            min-width: 50px;
+            text-align: center;
+            height: 50px;
+            border-radius: 0;
+            line-height: 50px;
         }
 
         .sidebar .nav-item {
@@ -189,7 +176,7 @@
             width: 50px;
             height: 50px;
             border-radius: 100%;
-            border: 1px solid #eee;
+            border: 1px solid #f2f2f2;
         }
 
         /* Custom CSS for the info control */
@@ -311,8 +298,7 @@
         /* Style the elements in the sidebar */
         h3 {
             margin: 0 0 10px;
-            font-size: 16px;
-            font-weight: bold;
+            font-size: 14px;
         }
         
         select {
@@ -340,7 +326,6 @@
                 <i class="bx bxl-codepen"></i>
                 <span>House Viz</span>
             </div>
-            <i class="bx bx-menu" id="btn"></i>
         </div>
         <div class="user">
             <img src="user-img.jpg" alt="me" class="user-img">
@@ -353,10 +338,10 @@
             <h3 class="section-title" onclick="toggleSection(this)">Homes <i class="bx bx-chevron-down"></i></h3>
             <div class="section-content">
                 <ul>
-                    <li><a href="#" onclick="togglePrices('home')"><i class="fa-solid fa-ellipsis-vertical"></i>Home Prices</a></li>
-                    <li><a href="#" onclick="togglePrices('homegrowthYoY')"><i class="fa-solid fa-ellipsis-vertical"></i>Home Growth YoY</a></li>
-                    <li><a href="#" onclick="togglePrices('homegrowthMoM')"><i class="fa-solid fa-ellipsis-vertical"></i>Home Growth MoM</a></li>
-                    <li><a href="#" onclick="togglePrices('inventory')"><i class="fa-solid fa-ellipsis-vertical"></i>For Sale Inventory</a></li>
+                    <li><a href="#" onclick="togglePrices('home')">Home Prices</a></li>
+                    <li><a href="#" onclick="togglePrices('homegrowthYoY')">Home Growth YoY</a></li>
+                    <li><a href="#" onclick="togglePrices('homegrowthMoM')">Home Growth MoM</a></li>
+                    <li><a href="#" onclick="togglePrices('inventory')">For Sale Inventory</a></li>
                 </ul>
             </div>
         </div>

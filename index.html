@@ -29,34 +29,35 @@
             left: 0;
             height: 100vh;
             width: 300px;
-            background-color: #12171e;
+            background-color: #f2f2f2;
             padding: 0;
             overflow-y: auto; /* Enables vertical scrolling if content overflows */
         }
 
         .section-title {
-            background-color: #1c2331; /* Add a background color */
+            background-color: #f2f2f2; /* Add a background color */
             padding: 12px 22px; /* Add padding */
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            color: white;
+            color: #171717;
             border-radius: 0;
             width: 100%;
+            font-weight: 500;
         } 
         
         .section-title:hover {
-            background-color: #2c3e50; /* Change the background color on hover */
+            background-color: #cdd3d8; /* Change the background color on hover */
             border-radius: 0;
         }
 
         .section-title.active {
-            background-color: #2c3e50;
+            background-color: #cdd3d8;
           }
           
           .section-title.active:hover {
-            background-color: #2c3e50;
+            background-color: #cdd3d8;
           }
 
         .sidebar-section {
@@ -68,22 +69,22 @@
         .section-title i {
             transition: transform 0.3s ease;
             font-size: 18px; /* Increase the font size of the icon */
-            color: #fff; /* Change the color of the icon */
+            color: #171717; /* Change the color of the icon */
         }
         
         .section-title.active i {
             transform: rotate(180deg);
-            color: #fff; /* Change the color of the icon when the section is active */
+            color: #171717; /* Change the color of the icon when the section is active */
         }
 
         .section-title {
-            border-bottom: 1px solid #fff; /* Add a bottom border */
+            border-bottom: 0.5px solid #a3a3b0; /* Add a bottom border */
         }
         
         .section-title i {
             transition: transform 0.3s ease;
             font-size: 20px;
-            color: #fff;
+            color: #171717;
         }
         
         .section-content {
@@ -97,11 +98,11 @@
         
         .section-title.active i {
             transform: rotate(180deg);
-            color: #fff;
+            color: #171717;
         }
 
         .sidebar .top .logo {
-            color: #fff;
+            color: #171717;
             display: flex;
             height: 50px;
             width: 100%;
@@ -126,7 +127,7 @@
         }
 
         .user p {
-            color: #fff;
+            color: #171717;
             opacity: 1;
             margin-left: 1rem;
         }
@@ -149,7 +150,7 @@
         }
 
         .sidebar ul li a {
-            color: #fff;
+            color: #171717;
             display: flex;
             align-items: center;
             text-decoration: none;
@@ -157,13 +158,6 @@
             padding-left: 30px; /* Add left padding to create space */
             width: 100%; /* Adjust the width to account for the padding */
             height: 100%; /* Add this line to make the anchor fill the entire height of the list item */
-        }
-
-        .sidebar ul li a:hover {
-            background-color: #fff;
-            color: #12171e;
-            padding-left: 30px; /* Add left padding on hover as well */
-            border-radius: 0;
         }
 
         .sidebar ul li a i {
@@ -182,7 +176,7 @@
             width: 50px;
             height: 50px;
             border-radius: 100%;
-            border: 1px solid #eee;
+            border: 1px solid #f2f2f2;
         }
 
         /* Custom CSS for the info control */
@@ -304,8 +298,7 @@
         /* Style the elements in the sidebar */
         h3 {
             margin: 0 0 10px;
-            font-size: 16px;
-            font-weight: bold;
+            font-size: 14px;
         }
         
         select {
@@ -333,7 +326,6 @@
                 <i class="bx bxl-codepen"></i>
                 <span>House Viz</span>
             </div>
-            <i class="bx bx-menu" id="btn"></i>
         </div>
         <div class="user">
             <img src="user-img.jpg" alt="me" class="user-img">
