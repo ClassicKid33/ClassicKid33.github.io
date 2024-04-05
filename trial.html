@@ -770,34 +770,55 @@
             grades = [30000, 900000]; // Minimum and maximum values for home prices
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
         } else if (type === 'homegrowthYoY') {
-            grades = [1, 5]; // Minimum and maximum values for rent prices
+            grades = [1, 5]; 
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
         } else if (type === 'homegrowthMoM') {
-            grades = [1, 5]; // Minimum and maximum values for rent prices
+            grades = [1, 5]; 
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
         } else if (type === 'inventory') {
-            grades = [300, 1000]; // Minimum and maximum values for rent prices
+            grades = [300, 1000]; 
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
         } else if (type === 'rent') {
-            grades = [400, 2500]; // Minimum and maximum values for rent prices
+            grades = [400, 2500];
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
         } else if (type === 'rentalgrowthYoY') {
-            grades = [1, 5]; // Minimum and maximum values for rent prices
+            grades = [1, 5]; 
+            colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
+        } else if (type === 'rentalgrowthMoM') {
+            grades = [1, 5]; 
+            colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
+        } else if (type === 'rentalvacancy') {
+            grades = [1, 10];
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
         } else if (type === 'income') {
-            grades = [14000, 150000]; // Minimum and maximum values for income
+            grades = [14000, 150000]; 
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
         } else if (type === 'priceToIncome') {
-            grades = [1, 10]; // Minimum and maximum values for price-to-income ratio
+            grades = [1, 10]; 
+            colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
+        } else if (type === 'population') {
+            grades = [50000, 5000000]; 
+            colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
+        } else if (type === 'populationgrowthYoY') {
+            grades = [1, 5]; 
+            colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
+        } else if (type === 'netmigration') {
+            grades = [1, 5]; 
+            colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
+        } else if (type === 'permits') {
+            grades = [300, 1500]; 
+            colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
+        } else if (type === 'propertytax') {
+            grades = [1, 10]; 
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
         } else if (type === 'rentalYield') {
-            grades = [0.2, 1.2]; // Minimum and maximum values for rental yield
+            grades = [0.2, 1.2]; 
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
         } else if (type === 'unemployment') {
-            grades = [0.3, 15]; // Minimum and maximum values for unemployment rate
+            grades = [0.3, 15]; 
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
         }
-        // Add more conditions for other types
+        
     
         var labels = ['<div style="display: flex; align-items: center; justify-content: space-between;">'];
         // Generate a label with a colored square for each color
