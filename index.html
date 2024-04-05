@@ -263,7 +263,8 @@
         .legend-value {
             font-weight: bold;
             text-shadow: -1px -1px 0 #f2f2f2, 1px -1px 0 #f2f2f2, -1px 1px 0 #f2f2f2, 1px 1px 0 #f2f2f2;
-            line-height: 0.5; /* Increase the line height to make the values taller */
+            line-height: 0.5; 
+            font-size: 14px; /* Increase the font size */
         }
 
         .legend-values {
@@ -846,7 +847,7 @@
             labels.push('</div>');
         
             // Add the minimum and maximum values below the colors
-            labels.push('<div class="legend-values" style="display: flex; justify-content: space-between; font-size: 12px;">');
+            labels.push('<div class="legend-values" style="display: flex; justify-content: space-between;">');
             labels.push('<span class="legend-value">' + grades[0].toLocaleString() + '</span>');
             labels.push('<span class="legend-value">' + grades[1].toLocaleString() + '</span>');
             labels.push('</div>');
