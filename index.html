@@ -234,16 +234,20 @@
         }
 
         .legend {
-            line-height: 24px; /* Increase the line height to accommodate larger blocks */
+            line-height: 24px;
             color: #000000;
             background: transparent;
-            padding: 10px 20px 10px 10px; /* Add padding on the right side */
+            padding: 10px;
             box-shadow: none;
+            position: absolute;
+            bottom: 0px;
+            right: 50px;
+            z-index: 1000;
         }
         
         .legend i {
-            width: 24px; /* Increase the width of the colored blocks */
-            height: 24px; /* Increase the height of the colored blocks */
+            width: 30px;
+            height: 20px;
             display: inline-block;
             color: #000000;
             margin-right: 0px;
@@ -252,9 +256,10 @@
         
         .info.legend {
             max-width: 300px;
-            padding: 0px 0px;
+            padding: 0px;
             background: transparent;
         }
+        
         
         
 
