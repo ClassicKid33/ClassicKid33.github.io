@@ -270,8 +270,21 @@
         .legend-values {
             margin-top: 2px; /* Reduce the margin-top to bring the values closer to the legend */
         }
-        
 
+        .data-value-bubble {
+            background-color: white;
+            border-radius: 5px;
+            padding: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+            position: absolute;
+            bottom: 45px;
+            right: 95px;
+            z-index: 1000;
+        }
+        
+        
         /* Custom CSS for Leaflet popup ----------------------------------------------------------*/
         .leaflet-popup-content-wrapper {
             background-color: black;
@@ -775,7 +788,45 @@
         }
     }
     
-    
+    function getDataValueLabel(type) {
+        var label = '';
+        if (type === 'home') {
+            label = 'Home Prices';
+        } else if (type === 'homegrowthYoY') {
+            label = 'Home Growth YoY';
+        } else if (type === 'homegrowthMoM') {
+            label = 'Home Growth MoM';
+        } else if (type === 'inventory') {
+            label = 'For Sale Inventory';
+        } else if (type === 'rent') {
+            label = 'Rent Prices';
+        } else if (type === 'rentalgrowthYoY') {
+            label = 'Rental Growth YoY';
+        } else if (type === 'rentalgrowthMoM') {
+            label = 'Rental Growth MoM';
+        } else if (type === 'rentalvacancy') {
+            label = 'Rental Vacancy';
+        } else if (type === 'income') {
+            label = 'Median Income';
+        } else if (type === 'priceToIncome') {
+            label = 'Price to Income Ratio';
+        } else if (type === 'population') {
+            label = 'Population';
+        } else if (type === 'populationgrowthYoY') {
+            label = 'Population Growth YoY';
+        } else if (type === 'netmigration') {
+            label = 'Net Migration';
+        } else if (type === 'permits') {
+            label = 'Building Permits';
+        } else if (type === 'propertytax') {
+            label = 'Property Tax Rate';
+        } else if (type === 'rentalYield') {
+            label = 'Rental Yield';
+        } else if (type === 'unemployment') {
+            label = 'Unemployment Rate';
+        }
+        return label;
+    }
 
 
 
@@ -873,6 +924,23 @@
     
         var legendDiv = legend.getContainer();
         legendDiv.innerHTML = '<h4 style="color: black;"></h4>' + labels.join('');
+
+        var dataValueBubble = L.control({position: 'bottomright'});
+
+        dataValueBubble.onAdd = function (map) {
+            var div = L.DomUtil.create('div', 'data-value-bubble');
+            div.innerHTML = getDataValueLabel(type);
+            return div;
+        };
+
+        // Check if the dataValueBubble control exists before removing it
+        if (map.dataValueBubble) {
+            map.removeControl(map.dataValueBubble);
+        }
+
+        // Add the updated data value bubble control
+        map.dataValueBubble = dataValueBubble;
+        dataValueBubble.addTo(map);
     }
     
     
