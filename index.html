@@ -95,6 +95,34 @@
         .section-content.active {
             display: block;
         }
+
+        .section-content label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .section-content input[type="radio"] {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #171717;
+            border-radius: 50%;
+            margin-right: 8px;
+            position: relative;
+        }
+        
+        .section-content input[type="radio"]:checked::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #171717;
+        }
         
         .section-title.active i {
             transform: rotate(180deg);
@@ -338,10 +366,22 @@
             <h3 class="section-title" onclick="toggleSection(this)">Homes <i class="bx bx-chevron-down"></i></h3>
             <div class="section-content">
                 <ul>
-                    <li><a href="#" onclick="togglePrices('home')">Home Prices</a></li>
-                    <li><a href="#" onclick="togglePrices('homegrowthYoY')">Home Growth YoY</a></li>
-                    <li><a href="#" onclick="togglePrices('homegrowthMoM')">Home Growth MoM</a></li>
-                    <li><a href="#" onclick="togglePrices('inventory')">For Sale Inventory</a></li>
+                    <li><label>
+                        <input type="radio" name="price-type" value="home" checked>
+                        <span>Home Prices</span>
+                    </label></li>
+                    <li><label>
+                        <input type="radio" name="price-type" value="homegrowthYoY">
+                        <span>Home Growth YoY</span>
+                    </label></li>
+                    <li><label>
+                        <input type="radio" name="price-type" value="homegrowthMoM">
+                        <span>Home Growth MoM</span>
+                    </label></li>
+                    <li><label>
+                        <input type="radio" name="price-type" value="inventory">
+                        <span>For Sale Inventory</span>
+                    </label></li>
                 </ul>
             </div>
         </div>
@@ -349,11 +389,11 @@
             <h3 class="section-title" onclick="toggleSection(this)">Rentals <i class="bx bx-chevron-down"></i></h3>
             <div class="section-content">
                 <ul>
-                    <li><a href="#" onclick="togglePrices('rent')">Rent Prices</a></li>
-                    <li><a href="#" onclick="togglePrices('rentalYield')">Rental Yield</a></li>
-                    <li><a href="#" onclick="togglePrices('rentalgrowthMoM')">Rental Growth MoM</a></li>
-                    <li><a href="#" onclick="togglePrices('rentalYieldYoY')">Rental Growth YoY</a></li>
-                    <li><a href="#" onclick="togglePrices('rentalvacancy')">Rental Vacancy</a></li>
+                    <li><label><input type="radio" name="price-type" value="rent"><span>Rent Prices</span></label></li>
+                    <li><label><input type="radio" name="price-type" value="rentalYield"><span>Rental Yield</span></label></li>
+                    <li><label><input type="radio" name="price-type" value="rentalgrowthYoY"><span>Rental Growth YoY</span></label></li>
+                    <li><label><input type="radio" name="price-type" value="rentalgrowthMoM"><span>Rental Growth MoM</span></label></li>
+                    <li><label><input type="radio" name="price-type" value="rentalvacancy"><span>Rental Vacancy</span></label></li>
                 </ul>
             </div>
         </div>
@@ -361,11 +401,11 @@
             <h3 class="section-title" onclick="toggleSection(this)">Demographics <i class="bx bx-chevron-down"></i></h3>
             <div class="section-content">
                 <ul>
-                    <li><a href="#" onclick="togglePrices('income')">Median Income</a></li>
-                    <li><a href="#" onclick="togglePrices('priceToIncome')">Price to Income Ratio</a></li>
-                    <li><a href="#" onclick="togglePrices('population')">Population</a></li>
-                    <li><a href="#" onclick="togglePrices('populationgrowthYoY')">Population Growth YoY</a></li>
-                    <li><a href="#" onclick="togglePrices('netmigration')">Net Migration</a></li>
+                    <li><label><input type="radio" name="price-type" value="income"><span>Median Income</span></label></li>
+                    <li><label><input type="radio" name="price-type" value="priceToIncome"><span>Price to Income Ratio</span></label></li>
+                    <li><label><input type="radio" name="price-type" value="population"><span>Population</span></label></li>
+                    <li><label><input type="radio" name="price-type" value="populationgrowthYoY"><span>Population Growth YoY</span></label></li>
+                    <li><label><input type="radio" name="price-type" value="netmigration"><span>Net Migration</span></label></li>
                 </ul>
             </div>
         </div>
@@ -373,9 +413,9 @@
             <h3 class="section-title" onclick="toggleSection(this)">Investing <i class="bx bx-chevron-down"></i></h3>
             <div class="section-content">
                 <ul>
-                    <li><a href="#" onclick="togglePrices('unemployment')">Unemployment Rate</a></li>
-                    <li><a href="#" onclick="togglePrices('permits')">Building Permits</a></li>
-                    <li><a href="#" onclick="togglePrices('propertytax')">Property Tax Rate</a></li>
+                    <li><label><input type="radio" name="price-type" value="unemployment"><span>Unemployment Rate</span></label></li>
+                    <li><label><input type="radio" name="price-type" value="permits"><span>Building Permits</span></label></li>
+                    <li><label><input type="radio" name="price-type" value="propertytax"><span>Property Tax Rate</span></label></li>
                 </ul>
             </div>
         </div>
@@ -415,13 +455,21 @@
 
         // Toggle between home prices and rent prices
         function togglePrices(type) {
-            currentPriceType = type; // Update the current price type
+            currentPriceType = type;
             countiesLayer.eachLayer(function(layer) {
-                 updatePopupContent(layer, type);
+                updatePopupContent(layer, type);
             });
-            countiesLayer.setStyle(style); // Reapply the style to update colors
-            updateLegend(type); // Update the legend based on the selected type
+            countiesLayer.setStyle(style);
+            updateLegend(type);
         }
+        
+        // Add event listener to the radio buttons
+        var radioButtons = document.querySelectorAll('input[name="price-type"]');
+        radioButtons.forEach(function(radio) {
+            radio.addEventListener('change', function() {
+                togglePrices(this.value);
+            });
+        });
 
         // Define variables and initialize map
         var map = L.map('map', { attributionControl: false }).setView([37.090240, -95.712891], 5);
