@@ -765,35 +765,47 @@
     function updateLegend(type) {
         var grades, colors;
         if (type === 'home') {
-            grades = [30000, 100000, 250000, 350000, 500000, 600000, 900000]; // Example thresholds
-            colors = ['#0000ff', '#9fc5e8', '#f5f5f5', '#f4a582', '#b2182b', '#ff4040', '#8b0000'];
+            grades = [100000, 900000]; // Minimum and maximum values for home prices
+            colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
         } else if (type === 'rent') {
-            grades = [600, 1000, 1200, 1500, 2000, 2500, 3000]; // Example thresholds
-            colors = ['#0000ff', '#9fc5e8', '#f5f5f5', '#f4a582', '#b2182b', '#ff4040', '#8b0000'];
-        }
-        else if (type === 'income') {
-            grades = [14000, 30000, 50000, 70000, 90000, 120000, 150000]; // Example thresholds
-            colors = ['#0000ff', '#9fc5e8', '#f5f5f5', '#f4a582', '#b2182b', '#ff4040', '#8b0000'];
+            grades = [400, 2500]; // Minimum and maximum values for rent prices
+            colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
+        } else if (type === 'income') {
+            grades = [14000, 150000]; // Minimum and maximum values for income
+            colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
+        } else if (type === 'priceToIncome') {
+            grades = [1, 10]; // Minimum and maximum values for price-to-income ratio
+            colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
+        } else if (type === 'rentalYield') {
+            grades = [0.2, 1.2]; // Minimum and maximum values for rental yield
+            colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
+        } else if (type === 'unemployment') {
+            grades = [0.3, 15]; // Minimum and maximum values for unemployment rate
+            colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
         }
         // Add more conditions for other types
     
         var labels = ['<div style="display: flex; align-items: center; justify-content: space-between;">'];
-            // Generate a label with a colored square for each interval
-            for (var i = 0; i < grades.length; i++) {
-                labels.push(
-                    '<div style="text-align: center; flex-grow: 1;">' +
-                    '<i style="background:' + colors[i] + '; width: 18px; height: 18px; display: inline-block; margin: 0 auto; opacity: 0.7;"></i>'
-                );
-                if (i === 0 || i === grades.length - 1 || (grades[i + 1])) { // Check for start, end, and middle values
-                    labels.push('<br><span style="font-size: 10px;">' + grades[i] + '</span>');
-                }
-                labels.push('</div>');
-            }
-            labels.push('</div>');
-        
-            var legendDiv = legend.getContainer();
-            legendDiv.innerHTML = '<h4 style="color: black;">Legend</h4>' + labels.join('');
+        // Generate a label with a colored square for each color
+        for (var i = 0; i < colors.length; i++) {
+            labels.push(
+                '<div style="text-align: center; flex-grow: 1;">' +
+                '<i style="background:' + colors[i] + '; width: 18px; height: 18px; display: inline-block; margin: 0 auto; opacity: 0.7;"></i>' +
+                '</div>'
+            );
         }
+        labels.push('</div>');
+    
+        // Add the minimum and maximum values below the colors
+        labels.push('<div style="display: flex; justify-content: space-between; font-size: 12px; margin-top: 5px;">');
+        labels.push('<span>' + grades[0].toLocaleString() + '</span>');
+        labels.push('<span>' + grades[1].toLocaleString() + '</span>');
+        labels.push('</div>');
+    
+        var legendDiv = legend.getContainer();
+        legendDiv.innerHTML = '<h4 style="color: black;">Legend</h4>' + labels.join('');
+    }
+    
 
     </script>
 </body>
