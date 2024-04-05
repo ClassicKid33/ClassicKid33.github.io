@@ -259,8 +259,11 @@
             padding: 0px;
             background: transparent;
         }
-        
-        
+
+        .legend-value {
+            font-weight: bold;
+            text-shadow: -1px -1px 0 #f2f2f2, 1px -1px 0 #f2f2f2, -1px 1px 0 #f2f2f2, 1px 1px 0 #f2f2f2;
+        }
         
 
         /* Custom CSS for Leaflet popup ----------------------------------------------------------*/
@@ -827,25 +830,25 @@
         
     
         var labels = ['<div style="display: flex; align-items: center; justify-content: space-between;">'];
-        // Generate a label with a colored square for each color
-        for (var i = 0; i < colors.length; i++) {
-            labels.push(
-                '<div style="text-align: center; flex-grow: 1;">' +
-                '<i style="background:' + colors[i] + '; width: 30px; height: 20px; display: inline-block; margin: 0 auto; opacity: 1;"></i>' +
-                '</div>'
-            );
+            // Generate a label with a colored square for each color
+            for (var i = 0; i < colors.length; i++) {
+                labels.push(
+                    '<div style="text-align: center; flex-grow: 1;">' +
+                    '<i style="background:' + colors[i] + '; width: 30px; height: 20px; display: inline-block; margin: 0 auto; opacity: 1;"></i>' +
+                    '</div>'
+                );
+            }
+            labels.push('</div>');
+        
+            // Add the minimum and maximum values below the colors
+            labels.push('<div style="display: flex; justify-content: space-between; font-size: 12px; margin-top: 5px;">');
+            labels.push('<span class="legend-value">' + grades[0].toLocaleString() + '</span>');
+            labels.push('<span class="legend-value">' + grades[1].toLocaleString() + '</span>');
+            labels.push('</div>');
+        
+            var legendDiv = legend.getContainer();
+            legendDiv.innerHTML = '<h4 style="color: black;"></h4>' + labels.join('');
         }
-        labels.push('</div>');
-    
-        // Add the minimum and maximum values below the colors
-        labels.push('<div style="display: flex; justify-content: space-between; font-size: 12px; margin-top: 5px;">');
-        labels.push('<span>' + grades[0].toLocaleString() + '</span>');
-        labels.push('<span>' + grades[1].toLocaleString() + '</span>');
-        labels.push('</div>');
-    
-        var legendDiv = legend.getContainer();
-        legendDiv.innerHTML = '<h4 style="color: black;"></h4>' + labels.join('');
-    }
     
 
     </script>
