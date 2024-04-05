@@ -261,10 +261,10 @@
         }
 
         .legend-value {
-            font-weight: bold;
-            text-shadow: -1px -1px 0 #f2f2f2, 1px -1px 0 #f2f2f2, -1px 1px 0 #f2f2f2, 1px 1px 0 #f2f2f2;
+            font-weight: 0;
+            text-shadow: -1.5px -1.5px 0 #f2f2f2, 1.5px -1.5px 0 #f2f2f2, -1.5px 1.5px 0 #f2f2f2, 1.5px 1.5px 0 #f2f2f2;
             line-height: 0.5; 
-            font-size: 14px; /* Increase the font size */
+            font-size: 16px; /* Increase the font size */
         }
 
         .legend-values {
@@ -781,80 +781,100 @@
 
     function updateLegend(type) {
         var grades, colors;
+        var isDollarValue = false;
+        var isPercentageValue = false;
+    
         if (type === 'home') {
-            grades = [30000, 900000]; // Minimum and maximum values for home prices
+            grades = [30000, 900000];
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
+            isDollarValue = true;
         } else if (type === 'homegrowthYoY') {
-            grades = [1, 5]; 
+            grades = [1, 5];
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
+            isPercentageValue = true;
         } else if (type === 'homegrowthMoM') {
-            grades = [1, 5]; 
+            grades = [1, 5];
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
+            isPercentageValue = true;
         } else if (type === 'inventory') {
-            grades = [300, 1000]; 
+            grades = [300, 1000];
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
         } else if (type === 'rent') {
             grades = [400, 2500];
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
+            isDollarValue = true;
         } else if (type === 'rentalgrowthYoY') {
-            grades = [1, 5]; 
+            grades = [1, 5];
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
+            isPercentageValue = true;
         } else if (type === 'rentalgrowthMoM') {
-            grades = [1, 5]; 
+            grades = [1, 5];
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
+            isPercentageValue = true;
         } else if (type === 'rentalvacancy') {
             grades = [1, 10];
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
+            isPercentageValue = true;
         } else if (type === 'income') {
-            grades = [14000, 150000]; 
+            grades = [14000, 150000];
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
+            isDollarValue = true;
         } else if (type === 'priceToIncome') {
-            grades = [1, 10]; 
+            grades = [1, 10];
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
         } else if (type === 'population') {
-            grades = [50000, 5000000]; 
+            grades = [50000, 5000000];
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
         } else if (type === 'populationgrowthYoY') {
-            grades = [1, 5]; 
+            grades = [1, 5];
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
+            isPercentageValue = true;
         } else if (type === 'netmigration') {
-            grades = [1, 5]; 
+            grades = [1, 5];
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
+            isPercentageValue = true;
         } else if (type === 'permits') {
-            grades = [300, 1500]; 
+            grades = [300, 1500];
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
         } else if (type === 'propertytax') {
-            grades = [1, 10]; 
+            grades = [1, 10];
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
+            isPercentageValue = true;
         } else if (type === 'rentalYield') {
-            grades = [0.2, 1.2]; 
+            grades = [0.2, 1.2];
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
+            isPercentageValue = true;
         } else if (type === 'unemployment') {
-            grades = [0.3, 15]; 
+            grades = [0.3, 15];
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
+            isPercentageValue = true;
         }
-        
     
         var labels = ['<div style="display: flex; align-items: center; justify-content: space-between;">'];
-            // Generate a label with a colored square for each color
-            for (var i = 0; i < colors.length; i++) {
-                labels.push(
-                    '<div style="text-align: center; flex-grow: 1;">' +
-                    '<i style="background:' + colors[i] + '; width: 30px; height: 20px; display: inline-block; margin: 0 auto; opacity: 1;"></i>' +
-                    '</div>'
-                );
-            }
-            labels.push('</div>');
-        
-            // Add the minimum and maximum values below the colors
-            labels.push('<div class="legend-values" style="display: flex; justify-content: space-between;">');
-            labels.push('<span class="legend-value">' + grades[0].toLocaleString() + '</span>');
-            labels.push('<span class="legend-value">' + grades[1].toLocaleString() + '</span>');
-            labels.push('</div>');
-        
-            var legendDiv = legend.getContainer();
-            legendDiv.innerHTML = '<h4 style="color: black;"></h4>' + labels.join('');
+        // Generate a label with a colored square for each color
+        for (var i = 0; i < colors.length; i++) {
+            labels.push(
+                '<div style="text-align: center; flex-grow: 1;">' +
+                '<i style="background:' + colors[i] + '; width: 30px; height: 20px; display: inline-block; margin: 0 auto; opacity: 1;"></i>' +
+                '</div>'
+            );
         }
+        labels.push('</div>');
+    
+        // Add the minimum and maximum values below the colors
+        labels.push('<div class="legend-values" style="display: flex; justify-content: space-between;">');
+        var minValue = isDollarValue ? '$' + grades[0].toLocaleString() : grades[0].toLocaleString();
+        var maxValue = isDollarValue ? '$' + grades[1].toLocaleString() : grades[1].toLocaleString();
+        minValue = isPercentageValue ? minValue + '%' : minValue;
+        maxValue = isPercentageValue ? maxValue + '%' : maxValue;
+        labels.push('<span class="legend-value">' + minValue + '</span>');
+        labels.push('<span class="legend-value">' + maxValue + '</span>');
+        labels.push('</div>');
+    
+        var legendDiv = legend.getContainer();
+        legendDiv.innerHTML = '<h4 style="color: black;"></h4>' + labels.join('');
+    }
+    
     
 
     </script>
