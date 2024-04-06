@@ -16,6 +16,7 @@
     <script src="us_countiesdata6.geojson"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.76.1/dist/L.Control.Locate.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.76.1/dist/L.Control.Locate.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <style>
 
         * {
@@ -24,6 +25,18 @@
             box-sizing: border-box;
             font-family: Helvetica;
         }
+
+        .leaflet-control-locate a {
+            font-size: 18px;
+            line-height: 24px;
+            padding: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+        }
+           
         
         .sidebar {
             position: absolute;
@@ -528,10 +541,10 @@
                 weight: 1,
                 clickable: false
             },
-            icon: 'fa fa-location-arrow',
+            icon: 'fas fa-crosshairs',
             metric: false,
             strings: {
-                title: "My location",
+                title: "Show me where I am",
                 popup: "You are within {distance} {unit} from this point",
                 outsideMapBoundsMsg: "You seem located outside the boundaries of the map"
             },
@@ -541,8 +554,10 @@
                 enableHighAccuracy: true,
                 maximumAge: 10000,
                 timeout: 10000
-            }
+            },
+            className: 'leaflet-control-locate' // Add the custom CSS class
         }).addTo(map);
+        
 
         var tiles = L.tileLayer('https://tile.jawg.io/3d99309d-9769-4bc5-9a91-6e11db5d07e5/{z}/{x}/{y}{r}.png?access-token=8om4J88dB6CkpCQtZdIrBlbkxNFgOdSHDwbFKGqn7fMZw9a7k3aVbeX2INhRYvxd', {
             maxZoom: 19,
