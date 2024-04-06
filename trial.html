@@ -455,6 +455,12 @@
             display: none;
         }
 
+        .leaflet-control-geocoder input[type="text"]::placeholder {
+            color: #757575; /* Adjust the color as needed */
+            opacity: 1; /* Ensure the placeholder is fully opaque */
+        }
+        
+
 
     </style>
 </head>
@@ -629,6 +635,14 @@
         var zoomControl = map._controlCorners.topright.firstChild;
         map._controlCorners.topright.insertBefore(geocoder.getContainer(), zoomControl);
         
+        document.addEventListener("DOMContentLoaded", function() {
+            // Wait for the DOM to fully load
+            var geocoderInput = document.querySelector('.leaflet-control-geocoder input[type="text"]');
+            if (geocoderInput) {
+                // If the input field is found, set its placeholder attribute
+                geocoderInput.setAttribute('placeholder', 'Search for any address');
+            }
+        });
 
         var tiles = L.tileLayer('https://tile.jawg.io/3d99309d-9769-4bc5-9a91-6e11db5d07e5/{z}/{x}/{y}{r}.png?access-token=8om4J88dB6CkpCQtZdIrBlbkxNFgOdSHDwbFKGqn7fMZw9a7k3aVbeX2INhRYvxd', {
             maxZoom: 19,
