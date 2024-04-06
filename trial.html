@@ -443,20 +443,12 @@
             cursor: pointer;
             width: 30px;
             height: 30px;
-            border-radius: 4px;
+            border-radius: 0px;
             margin-left: 4px;
             position: relative;
             display: flex; /* Use flexbox to center the icon */
             align-items: center;
             justify-content: center;
-        }
-
-        .leaflet-control-geocoder button::before {
-            content: "\f002";
-            font-family: "Font Awesome 5 Free";
-            font-weight: 900;
-            font-size: 16px;
-            /* Remove transform: translate(-50%, -50%); as flexbox is used for centering */
         }
 
         .leaflet-control-geocoder button img {
@@ -636,15 +628,6 @@
         // Position the geocoder control to the left of the zoom control
         var zoomControl = map._controlCorners.topright.firstChild;
         map._controlCorners.topright.insertBefore(geocoder.getContainer(), zoomControl);
-
-        document.addEventListener("DOMContentLoaded", function() {
-            // Wait for the DOM to fully load
-            var geocoderInput = document.querySelector('.leaflet-control-geocoder input[type="text"]');
-            if (geocoderInput) {
-                // If the input field is found, set its name attribute
-                geocoderInput.setAttribute('name', 'geocoderSearch');
-            }
-        });
         
 
         var tiles = L.tileLayer('https://tile.jawg.io/3d99309d-9769-4bc5-9a91-6e11db5d07e5/{z}/{x}/{y}{r}.png?access-token=8om4J88dB6CkpCQtZdIrBlbkxNFgOdSHDwbFKGqn7fMZw9a7k3aVbeX2INhRYvxd', {
