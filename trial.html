@@ -17,6 +17,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.76.1/dist/L.Control.Locate.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.76.1/dist/L.Control.Locate.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
     <style>
 
         * {
@@ -407,6 +410,60 @@
             font-size: 14px;
         }
 
+        /* Geocoder styling ------------------------------------------ */
+        .leaflet-control-geocoder {
+            width: 450px;
+            height: 40px;
+        }
+
+        .leaflet-control-geocoder input[type="text"] {
+            height: 100%;
+            box-sizing: border-box;
+            background-color: white;
+            color: #333;
+            font-size: 14px;
+            padding: 8px;
+            border: none;
+            outline: none;
+            box-shadow: none;
+        }
+
+        .leaflet-control-geocoder input[type="text"]:focus {
+            background-color: white;
+            color: #333;
+            outline: none;
+            box-shadow: none;
+        }
+
+        .leaflet-control-geocoder button {
+            background-color: transparent;
+            color: #333;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            margin-left: 4px;
+            position: relative;
+            display: flex; /* Use flexbox to center the icon */
+            align-items: center;
+            justify-content: center;
+        }
+
+        .leaflet-control-geocoder button::before {
+            content: "\f002";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            font-size: 16px;
+            /* Remove transform: translate(-50%, -50%); as flexbox is used for centering */
+        }
+
+        .leaflet-control-geocoder button img {
+            display: none;
+        }
+
+
     </style>
 </head>
 <body>
@@ -557,6 +614,37 @@
             },
             className: 'leaflet-control-locate' // Add the custom CSS class
         }).addTo(map);
+        
+
+        // Create and add the geocoder control
+        var geocoder = L.Control.geocoder({
+            defaultMarkGeocode: false,
+            expanded: true
+        })
+            .on('markgeocode', function(e) {
+                var bbox = e.geocode.bbox;
+                var poly = L.polygon([
+                    bbox.getSouthEast(),
+                    bbox.getNorthEast(),
+                    bbox.getNorthWest(),
+                    bbox.getSouthWest()
+                ]).addTo(map);
+                map.fitBounds(poly.getBounds());
+            })
+            .addTo(map);
+
+        // Position the geocoder control to the left of the zoom control
+        var zoomControl = map._controlCorners.topright.firstChild;
+        map._controlCorners.topright.insertBefore(geocoder.getContainer(), zoomControl);
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // Wait for the DOM to fully load
+            var geocoderInput = document.querySelector('.leaflet-control-geocoder input[type="text"]');
+            if (geocoderInput) {
+                // If the input field is found, set its name attribute
+                geocoderInput.setAttribute('name', 'geocoderSearch');
+            }
+        });
         
 
         var tiles = L.tileLayer('https://tile.jawg.io/3d99309d-9769-4bc5-9a91-6e11db5d07e5/{z}/{x}/{y}{r}.png?access-token=8om4J88dB6CkpCQtZdIrBlbkxNFgOdSHDwbFKGqn7fMZw9a7k3aVbeX2INhRYvxd', {
