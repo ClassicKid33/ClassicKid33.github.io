@@ -14,6 +14,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.1/chroma.min.js"></script>
     <script src="us_countiesdata6.geojson"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.76.1/dist/L.Control.Locate.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.76.1/dist/L.Control.Locate.min.js"></script>
     <style>
 
         * {
@@ -510,6 +512,38 @@
         // Define variables and initialize map
         var map = L.map('map', { attributionControl: false, zoomControl: false }).setView([37.090240, -95.712891], 5);
         L.control.zoom({ position: 'topright' }).addTo(map);
+
+        var locateControl = L.control.locate({
+            position: 'topright',
+            drawCircle: true,
+            follow: true,
+            setView: true,
+            keepCurrentZoomLevel: true,
+            markerStyle: {
+                weight: 1,
+                opacity: 0.8,
+                fillOpacity: 0.8
+            },
+            circleStyle: {
+                weight: 1,
+                clickable: false
+            },
+            icon: 'fa fa-location-arrow',
+            metric: false,
+            strings: {
+                title: "My location",
+                popup: "You are within {distance} {unit} from this point",
+                outsideMapBoundsMsg: "You seem located outside the boundaries of the map"
+            },
+            locateOptions: {
+                maxZoom: 18,
+                watch: true,
+                enableHighAccuracy: true,
+                maximumAge: 10000,
+                timeout: 10000
+            }
+        }).addTo(map);
+
         var tiles = L.tileLayer('https://tile.jawg.io/3d99309d-9769-4bc5-9a91-6e11db5d07e5/{z}/{x}/{y}{r}.png?access-token=8om4J88dB6CkpCQtZdIrBlbkxNFgOdSHDwbFKGqn7fMZw9a7k3aVbeX2INhRYvxd', {
             maxZoom: 19,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
