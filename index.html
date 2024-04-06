@@ -508,7 +508,8 @@
         });
 
         // Define variables and initialize map
-        var map = L.map('map', { attributionControl: false }).setView([37.090240, -95.712891], 5);
+        var map = L.map('map', { attributionControl: false, zoomControl: false }).setView([37.090240, -95.712891], 5);
+        L.control.zoom({ position: 'topright' }).addTo(map);
         var tiles = L.tileLayer('https://tile.jawg.io/3d99309d-9769-4bc5-9a91-6e11db5d07e5/{z}/{x}/{y}{r}.png?access-token=8om4J88dB6CkpCQtZdIrBlbkxNFgOdSHDwbFKGqn7fMZw9a7k3aVbeX2INhRYvxd', {
             maxZoom: 19,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
