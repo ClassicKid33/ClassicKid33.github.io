@@ -17,11 +17,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.76.1/dist/L.Control.Locate.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.76.1/dist/L.Control.Locate.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
-    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css">
+    <script src="https://unpkg.com/esri-leaflet/dist/esri-leaflet.js"></script>
+    <script src="https://unpkg.com/esri-leaflet-geocoder/dist/esri-leaflet-geocoder.js"></script>
 
+    
     <style>
-
         * {
             margin: 0;
             padding: 0;
@@ -411,56 +412,7 @@
         }
 
         /* Geocoder styling ------------------------------------------ */
-        .leaflet-control-geocoder {
-            width: 450px;
-            height: 40px;
-        }
-
-        .leaflet-control-geocoder input[type="text"] {
-            height: 100%;
-            box-sizing: border-box;
-            background-color: white;
-            color: #333;
-            font-size: 14px;
-            padding: 8px;
-            border: none;
-            outline: none;
-            box-shadow: none;
-        }
-
-        .leaflet-control-geocoder input[type="text"]:focus {
-            background-color: white;
-            color: #333;
-            outline: none;
-            box-shadow: none;
-        }
-
-        .leaflet-control-geocoder button {
-            background-color: transparent;
-            color: #333;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            width: 30px;
-            height: 30px;
-            border-radius: 0px;
-            margin-left: 4px;
-            position: relative;
-            display: flex; /* Use flexbox to center the icon */
-            align-items: center;
-            justify-content: center;
-        }
-
-        .leaflet-control-geocoder button img {
-            display: none;
-        }
-
-        .leaflet-control-geocoder input[type="text"]::placeholder {
-            color: #757575; /* Adjust the color as needed */
-            opacity: 1; /* Ensure the placeholder is fully opaque */
-        }
-        
-
+       
 
     </style>
 </head>
@@ -614,33 +566,15 @@
         }).addTo(map);
         
 
-        // Create and add the geocoder control
-        var geocoder = L.Control.geocoder({
-            defaultMarkGeocode: false,
-            expanded: true
-        })
-            .on('markgeocode', function(e) {
-                var bbox = e.geocode.bbox;
-                var poly = L.polygon([
-                    bbox.getSouthEast(),
-                    bbox.getNorthEast(),
-                    bbox.getNorthWest(),
-                    bbox.getSouthWest()
-                ]).addTo(map);
-                map.fitBounds(poly.getBounds());
-            })
-            .addTo(map);
+        // Add Esri Geocoding service
+        var searchControl = L.esri.Geocoding.geosearch().addTo(map);
 
-        // Position the geocoder control to the left of the zoom control
-        var zoomControl = map._controlCorners.topright.firstChild;
-        map._controlCorners.topright.insertBefore(geocoder.getContainer(), zoomControl);
-        
-        document.addEventListener("DOMContentLoaded", function() {
-            // Wait for the DOM to fully load
-            var geocoderInput = document.querySelector('.leaflet-control-geocoder input[type="text"]');
-            if (geocoderInput) {
-                // If the input field is found, set its placeholder attribute
-                geocoderInput.setAttribute('placeholder', 'Search for any address');
+        var results = L.layerGroup().addTo(map);
+
+        searchControl.on('results', function(data) {
+            results.clearLayers();
+            for (var i = data.results.length - 1; i >= 0; i--) {
+                results.addLayer(L.marker(data.results[i].latlng));
             }
         });
 
