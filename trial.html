@@ -169,7 +169,8 @@
             opacity: 1;
             margin-left: 10px;
             font-size: 28px;
-            padding-top: 20px;
+            padding-top: 40px;
+            padding-bottom: 40px;
         } 
 
         .top .logo i {
@@ -181,13 +182,23 @@
         .user {
             display: flex;
             align-items: center;
-            margin: 1rem 0;
+            margin-left: auto;
+            margin-right: 20px;
         }
 
         .user p {
             color: #171717;
             opacity: 1;
-            margin-left: 1rem;
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .user-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid #f2f2f2;
+            margin-right: 10px;
         }
 
         .bold {
@@ -230,13 +241,7 @@
             opacity: 1;
         }
 
-        .user-img {
-            width: 50px;
-            height: 50px;
-            border-radius: 100%;
-            border: 1px solid #f2f2f2;
-            margin-left: 12px;
-        }
+       
 
         /* Custom CSS for the info control */
         .info {
@@ -553,13 +558,6 @@
                 <span>House Viz</span>
             </div>
         </div>
-        <div class="user">
-            <img src="user-img.jpg" alt="me" class="user-img">
-            <div>
-                <p class="bold">Erik O.</p>
-                <p>Pro User</p>
-            </div>
-        </div>
         <div class="sidebar-section">
             <h3 class="section-title" onclick="toggleSection(this)">Homes <i class="bx bx-chevron-down"></i></h3>
             <div class="section-content">
@@ -615,6 +613,13 @@
         <div class="layer-selection">
             <label><input type="radio" name="layer-type" value="state" checked><span>State</span></label>
             <label><input type="radio" name="layer-type" value="county"><span>County</span></label>
+        </div>
+        <div class="user">
+            <img src="user-img.jpg" alt="me" class="user-img">
+            <div>
+                <p class="bold">Erik O.</p>
+                <p>Pro User</p>
+            </div>
         </div>
     </div>
     
