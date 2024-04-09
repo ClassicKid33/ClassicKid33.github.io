@@ -427,28 +427,25 @@
         
         .search-container .geocoder-control input {
             width: 400px;
-            padding: 0px;
+            padding: 0px !important;
             font-size: 14px;
-            height: 40px;
+            height: 40px !important;
             background-color: #f2f2f2;
             color: #333333;
-            outline: none !important; /* Remove the outline with !important */
-            box-shadow: none !important; /* Remove the box shadow with !important */
+            outline: none !important;
+            box-shadow: none !important;
         }
         
         
-
         .search-container .geocoder-control input::placeholder {
-            color: #999999; /* Change the placeholder text color */
+            color: #999999 !important;
+            opacity: 1 !important;
         }
+              
 
         .search-container .geocoder-control::before {
             color: #333333; /* Change the search icon color */
         }
-        
-        
-        
-
 
         /* Top bar styling ------------------------------------------- */
         .top-bar {
@@ -1121,6 +1118,31 @@
     }
     
     
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // Function to set placeholder text
+        function setPlaceholder() {
+            var searchInput = document.querySelector('.geocoder-control input');
+            if (searchInput) {
+                searchInput.setAttribute('placeholder', 'Search for a location');
+            }
+        }
+    
+        // Wait for the map and geocoder to be fully loaded
+        var checkExist = setInterval(function() {
+            var searchInput = document.querySelector('.geocoder-control input');
+            if (searchInput) {
+                console.log("Exists!");
+                setPlaceholder(); // Set placeholder initially
+                clearInterval(checkExist);
+    
+                // Reinforce placeholder on blur (when input loses focus)
+                searchInput.addEventListener('blur', function() {
+                    setPlaceholder();
+                });
+            }
+        }, 100); // check every 100ms
+    });
 
     </script>
 </body>

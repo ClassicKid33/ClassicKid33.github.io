@@ -47,7 +47,7 @@
             top: 0;
             left: 0;
             height: 100vh;
-            width: 300px;
+            width: 280px;
             background-color: #f2f2f2;
             padding: 0;
             overflow-y: auto; /* Enables vertical scrolling if content overflows */
@@ -375,7 +375,7 @@
             height: 100vh; 
             position: absolute;
             top: 0;
-            left: 300px; /* Adjust the left position to leave space for the sidebar */
+            left: 280px; /* Adjust the left position to leave space for the sidebar */
             right: 0;
             bottom: 0;
             overflow: hidden; /* Hide any content overflow */
@@ -412,6 +412,77 @@
         }
 
         /* Geocoder styling ------------------------------------------ */
+        .search-container {
+            flex: 0 0 200px; /* Adjust the width as needed */
+            margin-right: 20px;
+            position: relative;
+            left: 15px; /* Adjust the value to move the search bar to the right---------- */
+        }
+        
+        
+        .search-container .geocoder-control {
+            width: 100%;
+            box-shadow: none !important; /* Remove the box shadow with !important */
+        }             
+        
+        .search-container .geocoder-control input {
+            width: 400px;
+            padding: 0px !important;
+            font-size: 14px;
+            height: 40px !important;
+            background-color: #f2f2f2;
+            color: #333333;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+        
+        
+        .search-container .geocoder-control input::placeholder {
+            color: #999999 !important;
+            opacity: 1 !important;
+        }
+              
+
+        .search-container .geocoder-control::before {
+            color: #333333; /* Change the search icon color */
+        }
+
+        /* Top bar styling ------------------------------------------- */
+        .top-bar {
+            position: absolute;
+            top: 15px; /* Add space from the top */
+            left: 310px; /* Add space from the left */
+            right: 50px; /* Add space from the right */
+            height: 60px;
+            background-color: #f2f2f2;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 1000;
+            border-radius: 0px; /* Add border-radius for rounded corners */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+        }
+        
+        
+        .search-container {
+            flex: 0 0 200px; /* Adjust the width as needed */
+            margin-right: 20px;
+            position: relative;
+            left: 15px; /* Adjust the value to move the search bar to the right */
+            top: -7px; /* Adjust the value to move the search bar up */
+        }
+            
+        
+        
+        .layer-selection label {
+            margin-left: 10px;
+        }
+
+        .layer-selection {
+            margin-left: auto; /* Push the layer selection to the right */
+        }
+        
+        
        
 
     </style>
@@ -478,6 +549,19 @@
             </div>
         </div>
     </div>
+
+    <div class="top-bar">
+        <div class="search-container">
+            <div id="geocoder" class="geocoder-control"></div>
+        </div>
+        <div class="layer-selection">
+            <label><input type="radio" name="layer-type" value="county" checked>County</label>
+            <label><input type="radio" name="layer-type" value="state">State</label>
+        </div>
+    </div>
+    
+    
+    
     
     
     <div id="map"></div>
@@ -567,7 +651,14 @@
         
 
         // Add Esri Geocoding service
-        var searchControl = L.esri.Geocoding.geosearch().addTo(map);
+        var searchControl = L.esri.Geocoding.geosearch({
+            position: 'topright',
+            placeholder: 'Search for a location',
+            useMapBounds: false,
+            providers: [L.esri.Geocoding.arcgisOnlineProvider({
+                apikey: 'YOUR_API_KEY'
+            })]
+        }).addTo(map);
 
         var results = L.layerGroup().addTo(map);
 
@@ -577,6 +668,14 @@
                 results.addLayer(L.marker(data.results[i].latlng));
             }
         });
+
+        // Remove the existing search control
+        map.removeControl(searchControl);
+
+        // Add the search control to the search container
+        var geocoderContainer = document.getElementById('geocoder');
+        geocoderContainer.appendChild(searchControl.onAdd(map));
+
 
         var tiles = L.tileLayer('https://tile.jawg.io/3d99309d-9769-4bc5-9a91-6e11db5d07e5/{z}/{x}/{y}{r}.png?access-token=8om4J88dB6CkpCQtZdIrBlbkxNFgOdSHDwbFKGqn7fMZw9a7k3aVbeX2INhRYvxd', {
             maxZoom: 19,
@@ -1019,6 +1118,31 @@
     }
     
     
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // Function to set placeholder text
+        function setPlaceholder() {
+            var searchInput = document.querySelector('.geocoder-control input');
+            if (searchInput) {
+                searchInput.setAttribute('placeholder', 'Search for a location');
+            }
+        }
+    
+        // Wait for the map and geocoder to be fully loaded
+        var checkExist = setInterval(function() {
+            var searchInput = document.querySelector('.geocoder-control input');
+            if (searchInput) {
+                console.log("Exists!");
+                setPlaceholder(); // Set placeholder initially
+                clearInterval(checkExist);
+    
+                // Reinforce placeholder on blur (when input loses focus)
+                searchInput.addEventListener('blur', function() {
+                    setPlaceholder();
+                });
+            }
+        }, 100); // check every 100ms
+    });
 
     </script>
 </body>
