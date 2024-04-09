@@ -422,14 +422,31 @@
         
         .search-container .geocoder-control {
             width: 100%;
-        }
+            box-shadow: none !important; /* Remove the box shadow with !important */
+        }             
         
         .search-container .geocoder-control input {
             width: 400px;
-            padding: 0px; /* Reduced padding */
+            padding: 0px;
             font-size: 14px;
-            height: 40px; /* Reduced height */
+            height: 40px;
+            background-color: #f2f2f2;
+            color: #333333;
+            outline: none !important; /* Remove the outline with !important */
+            box-shadow: none !important; /* Remove the box shadow with !important */
         }
+        
+        
+
+        .search-container .geocoder-control input::placeholder {
+            color: #999999; /* Change the placeholder text color */
+        }
+
+        .search-container .geocoder-control::before {
+            color: #333333; /* Change the search icon color */
+        }
+        
+        
         
 
 
@@ -439,13 +456,13 @@
             top: 15px; /* Add space from the top */
             left: 310px; /* Add space from the left */
             right: 50px; /* Add space from the right */
-            height: 50px;
+            height: 60px;
             background-color: #f2f2f2;
             display: flex;
             align-items: center;
             padding: 0 20px;
             z-index: 1000;
-            border-radius: 5px; /* Add border-radius for rounded corners */
+            border-radius: 0px; /* Add border-radius for rounded corners */
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
         }
         
@@ -453,7 +470,11 @@
         .search-container {
             flex: 0 0 200px; /* Adjust the width as needed */
             margin-right: 20px;
-        }        
+            position: relative;
+            left: 15px; /* Adjust the value to move the search bar to the right */
+            top: -7px; /* Adjust the value to move the search bar up */
+        }
+            
         
         
         .layer-selection label {
