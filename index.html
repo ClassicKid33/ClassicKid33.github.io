@@ -545,6 +545,23 @@
             position: relative;
             left: 230px;
         }
+
+        .menu-item {
+            display: block;
+            padding: 12px 22px;
+            text-decoration: none;
+            color: #171717;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            border-bottom: 0.5px solid #a3a3b0; /* Add this line */
+            margin-top: 0px;
+            margin-bottom: 10px;
+        }
+        
+        .menu-item:hover {
+            background-color: #f2f2f2;
+        }
        
 
     </style>
@@ -602,6 +619,9 @@
                     <li><label><input type="radio" name="price-type" value="propertytax"><span>Property Tax Rate</span></label></li>
                 </ul>
             </div>
+        </div>
+        <div>
+            <a href="#" class="menu-item">Charts</a>
         </div>
     </div>
 
