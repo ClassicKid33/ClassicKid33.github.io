@@ -447,6 +447,17 @@
             color: #333333; /* Change the search icon color */
         }
 
+        .search-container .geocoder-control .geocoder-icon-search {
+            width: 50px !important;
+            height: 50px !important;
+            left: 10px !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            background-size: 20px 20px !important;
+        }
+
+        
+
         /* Top bar styling ------------------------------------------- */
         .top-bar {
             position: absolute;
@@ -471,8 +482,6 @@
             left: 15px; /* Adjust the value to move the search bar to the right */
             top: -7px; /* Adjust the value to move the search bar up */
         }
-            
-        
         
         .layer-selection label {
             margin-left: 10px;
@@ -482,7 +491,15 @@
             margin-left: auto; /* Push the layer selection to the right */
         }
         
-        
+        .vertical-line {
+            width: 1px;
+            height: 60%; /* Adjust the height as needed */
+            background-color: #a8a8a8; /* Change the color to your desired grey shade */
+            margin: 0 20px; /* Add some horizontal margin for spacing */
+            z-index: 1000;
+            position: relative;
+            left: 230px;
+        }
        
 
     </style>
@@ -554,6 +571,7 @@
         <div class="search-container">
             <div id="geocoder" class="geocoder-control"></div>
         </div>
+        <div class="vertical-line"></div> <!-- Add this line -->
         <div class="layer-selection">
             <label><input type="radio" name="layer-type" value="county" checked>County</label>
             <label><input type="radio" name="layer-type" value="state">State</label>
