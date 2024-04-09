@@ -485,11 +485,46 @@
         
         .layer-selection {
             margin-right: auto; /* Push the layer selection to the left */
-            padding-left: 250px; /* Add padding on the left side */
+            padding-left: 200px; /* Add padding on the left side */
         }
         
         .layer-selection label {
-            margin-left: 10px; /* Add margin to the left of each label */
+            margin-left: 50px; /* Add margin to the left of each label */
+        }
+
+        .layer-selection label span {
+            margin-left: 10px; /* Add margin to the left of the text */
+        }
+
+        .layer-selection input[type="radio"] {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #ccc; /* Default grey outline */
+            border-radius: 50%;
+            margin-right: 8px;
+            position: relative;
+            cursor: pointer; /* Add cursor pointer for better UX */
+        }
+        
+        .layer-selection input[type="radio"]:hover {
+            border-color: #3498DB; /* Change outline color to blue on hover */
+        }
+        
+        .layer-selection input[type="radio"]:checked {
+            border-color: #3498DB; /* Keep the blue outline for checked radio */
+        }
+        
+        .layer-selection input[type="radio"]:checked::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #3498DB; /* Fill color for checked radio */
         }
         
         .vertical-line {
@@ -572,10 +607,10 @@
         <div class="search-container">
             <div id="geocoder" class="geocoder-control"></div>
         </div>
-        <div class="vertical-line"></div> <!-- Add this line -->
+        <div class="vertical-line"></div>
         <div class="layer-selection">
-            <label><input type="radio" name="layer-type" value="county" checked>County</label>
-            <label><input type="radio" name="layer-type" value="state">State</label>
+            <label><input type="radio" name="layer-type" value="state" checked><span>State</span></label>
+            <label><input type="radio" name="layer-type" value="county"><span>County</span></label>
         </div>
     </div>
     
