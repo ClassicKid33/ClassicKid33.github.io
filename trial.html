@@ -562,6 +562,23 @@
         .menu-item:hover {
             background-color: #f2f2f2;
         }
+
+        .share-button {
+            margin-left: auto;
+        }
+        
+        .share-button button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
        
 
     </style>
@@ -633,6 +650,9 @@
         <div class="layer-selection">
             <label><input type="radio" name="layer-type" value="state" checked><span>State</span></label>
             <label><input type="radio" name="layer-type" value="county"><span>County</span></label>
+        </div>
+        <div class="share-button">
+            <button onclick="shareMap()">Share</button>
         </div>
         <div class="user">
             <img src="user-img.jpg" alt="me" class="user-img">
@@ -1209,6 +1229,26 @@
             if (searchInput) {
                 searchInput.setAttribute('placeholder', 'Search for a location');
             }
+        }
+
+        function shareMap() {
+            // Get the current map view URL
+            var mapUrl = window.location.href;
+        
+            // Create a temporary input element to copy the URL
+            var tempInput = document.createElement("input");
+            tempInput.value = mapUrl;
+            document.body.appendChild(tempInput);
+        
+            // Select and copy the URL
+            tempInput.select();
+            document.execCommand("copy");
+        
+            // Remove the temporary input element
+            document.body.removeChild(tempInput);
+        
+            // Display a message to indicate that the URL has been copied
+            alert("Map URL copied to clipboard!");
         }
     
         // Wait for the map and geocoder to be fully loaded
