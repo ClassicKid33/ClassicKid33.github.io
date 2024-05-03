@@ -1042,22 +1042,22 @@
     
         var popupContent = "<div class='popup-container'>" +
             "<div class='popup-header'>" + countyName + "</div>";
-    
+
         // Conditionally append information based on the currentPriceType
         if (currentPriceType === 'home' && homePrice) {
-            popupContent += "<div class='popup-body'><span class='density-label'>Home Price:</span> <span class='popup-value'>$" + homePrice.toLocaleString() + "</span></div>";
+        popupContent += "<div class='popup-body'><span class='density-label'>Home Price:</span> <span class='popup-value'>$" + parseInt(homePrice).toLocaleString() + "</span></div>";
         } else if (currentPriceType === 'rent' && rentPrice) {
-            popupContent += "<div class='popup-body'><span class='density-label'>Rent Price:</span> <span class='popup-value'>$" + rentPrice.toLocaleString() + "</span></div>";
+            popupContent += "<div class='popup-body'><span class='density-label'>Rent Price:</span> <span class='popup-value'>$" + parseInt(rentPrice).toLocaleString() + "</span></div>";
         } else if (currentPriceType === 'income' && medianIncome) {
-            popupContent += "<div class='popup-body'><span class='density-label'>Income:</span> <span class='popup-value'>$" + medianIncome.toLocaleString() + "</span></div>";
+            popupContent += "<div class='popup-body'><span class='density-label'>Income:</span> <span class='popup-value'>$" + parseInt(medianIncome).toLocaleString() + "</span></div>";
         } else if (currentPriceType === 'priceToIncome' && homePrice && medianIncome) {
-            var priceToIncomeRatio = (homePrice / medianIncome).toFixed(2);
+            var priceToIncomeRatio = (parseFloat(homePrice) / parseFloat(medianIncome)).toFixed(2);
             popupContent += "<div class='popup-body'><span class='density-label'>Price/Income:</span> <span class='popup-value'>" + priceToIncomeRatio + "</span></div>";
         } else if (currentPriceType === 'rentalYield' && homePrice && rentPrice) {
-            var rentalYield = ((rentPrice / homePrice) * 100).toFixed(2);
+            var rentalYield = ((parseFloat(rentPrice) / parseFloat(homePrice)) * 100).toFixed(2);
             popupContent += "<div class='popup-body'><span class='density-label'>Rental Yield:</span> <span class='popup-value'>" + rentalYield + "%</span></div>";
         } else if (currentPriceType === 'unemployment' && unemploymentRate) {
-            popupContent += "<div class='popup-body'><span class='density-label'>Unemployment:</span> <span class='popup-value'>" + unemploymentRate + "%</span></div>";
+            popupContent += "<div class='popup-body'><span class='density-label'>Unemployment:</span> <span class='popup-value'>" + parseFloat(unemploymentRate).toFixed(2) + "%</span></div>";
         }
     
         popupContent += "</div>"; // Close the popup-container div
