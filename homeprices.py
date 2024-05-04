@@ -90,4 +90,4 @@ for feature in geojson_data['features']:
 
 # Overwrite the existing GeoJSON file with the updated data
 with open('NewBasemapcopy.geojson', 'w') as file:
-    json.dump(geojson_data, file, indent=2)
+    json.dump(geojson_data, file, indent=1)

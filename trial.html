@@ -1039,6 +1039,8 @@
         var rentPrice = layer.feature.properties["Zillow RentPrices _rentPrices"];
         var medianIncome = layer.feature.properties["medianincome_MedianIncome"];
         var unemploymentRate = layer.feature.properties["unemploymentrate_Uemployment"];
+        var homegrowthYoY = layer.feature.properties["homegrowthYoY"]; // Add this line
+        var homegrowthMoM = layer.feature.properties["homegrowthMoM"]; // Add this line
     
         var popupContent = "<div class='popup-container'>" +
             "<div class='popup-header'>" + countyName + "</div>";
@@ -1058,6 +1060,10 @@
             popupContent += "<div class='popup-body'><span class='density-label'>Rental Yield:</span> <span class='popup-value'>" + rentalYield + "%</span></div>";
         } else if (currentPriceType === 'unemployment' && unemploymentRate) {
             popupContent += "<div class='popup-body'><span class='density-label'>Unemployment:</span> <span class='popup-value'>" + parseFloat(unemploymentRate).toFixed(2) + "%</span></div>";
+        } else if (currentPriceType === 'homegrowthYoY' && homegrowthYoY) { // Add this block
+            popupContent += "<div class='popup-body'><span class='density-label'>Home Growth YoY:</span> <span class='popup-value'>" + parseFloat(homegrowthYoY).toFixed(2) + "%</span></div>";
+        } else if (currentPriceType === 'homegrowthMoM' && homegrowthMoM) { // Add this block
+            popupContent += "<div class='popup-body'><span class='density-label'>Home Growth MoM:</span> <span class='popup-value'>" + parseFloat(homegrowthMoM).toFixed(2) + "%</span></div>";
         }
     
         popupContent += "</div>"; // Close the popup-container div
