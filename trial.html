@@ -615,8 +615,8 @@
                 <ul>
                     <li><label><input type="radio" name="price-type" value="rent"><span>Rent Prices</span></label></li>
                     <li><label><input type="radio" name="price-type" value="rentalYield"><span>Rental Yield</span></label></li>
-                    <li><label><input type="radio" name="price-type" value="rentalgrowthYoY"><span>Rental Growth YoY</span></label></li>
-                    <li><label><input type="radio" name="price-type" value="rentalgrowthMoM"><span>Rental Growth MoM</span></label></li>
+                    <li><label><input type="radio" name="price-type" value="rentgrowthYoY"><span>Rental Growth YoY</span></label></li>
+                    <li><label><input type="radio" name="price-type" value="rentgrowthMoM"><span>Rental Growth MoM</span></label></li>
                     <li><label><input type="radio" name="price-type" value="rentalvacancy"><span>Rental Vacancy</span></label></li>
                 </ul>
             </div>
@@ -899,6 +899,25 @@
                        value > -2 ? '#0000ff' :
                        'transparent';
             }
+            else if (type === 'rentgrowthYoY') {
+                return value > 10 ? '#fe0100' :
+                       value > 5 ? '#ff8174' :
+                       value > 2 ? '#fedfd7' :
+                       value > 0 ? '#FFFFFF' :
+                       value > -2 ? '#d9daf8' :
+                       value > -5 ? '#9296fa' :
+                       value > -10 ? '#0000ff' :
+                       'transparent';
+            } else if (type === 'rentgrowthMoM') {
+                return value > 2 ? '#fe0100' :
+                       value > 1 ? '#ff8174' :
+                       value > 0.5 ? '#fedfd7' :
+                       value > 0 ? '#FFFFFF' :
+                       value > -0.5 ? '#d9daf8' :
+                       value > -1 ? '#9296fa' :
+                       value > -2 ? '#0000ff' :
+                       'transparent';
+            }
         }
         
         
@@ -920,13 +939,17 @@
                 var rentPrice = feature.properties["Zillow RentPrices _rentPrices"];
                 value = homePrice && rentPrice ? (rentPrice / homePrice) * 100 : 0;
             } else if (currentPriceType === 'unemployment') {
-                // Retrieve the unemployment rate from the feature's properties
                 value = feature.properties["unemploymentrate_Uemployment"];
             } else if (currentPriceType === 'homegrowthYoY') {
                 value = feature.properties["homegrowthYoY"];
             } else if (currentPriceType === 'homegrowthMoM') {
                 value = feature.properties["homegrowthMoM"];
+            } else if (currentPriceType === 'rentgrowthYoY') {
+                value = feature.properties["rentgrowthYoY"];
+            } else if (currentPriceType === 'rentgrowthMoM') {
+                value = feature.properties["rentgrowthMoM"];
             }
+
             // Check if the value is undefined, null, or any other value that indicates the absence of information
             if (value === undefined || value === null || value === '' || (currentPriceType === 'rentalYield' && value === 0)) {
                 // Reduce the opacity for counties without information or with no rental yield data
@@ -966,6 +989,10 @@
                     value = feature.properties["homegrowthYoY"];
                 } else if (currentPriceType === 'homegrowthMoM') { // Add this block
                     value = feature.properties["homegrowthMoM"];
+                } else if (currentPriceType === 'rentgrowthYoY') { // Add this block
+                    value = feature.properties["rentgrowthYoY"];
+                } else if (currentPriceType === 'rentgrowthMoM') { // Add this block
+                    value = feature.properties["rentgrowthMoM"];
                 }
 
                 // Check if the value is undefined, null, or any other value that indicates the absence of information
@@ -1068,6 +1095,8 @@
         var unemploymentRate = layer.feature.properties["unemploymentrate_Uemployment"];
         var homegrowthYoY = layer.feature.properties["homegrowthYoY"]; // Add this line
         var homegrowthMoM = layer.feature.properties["homegrowthMoM"]; // Add this line
+        var rentgrowthYoY = layer.feature.properties["rentgrowthYoY"]; // Add this line
+        var rentgrowthMoM = layer.feature.properties["rentgrowthMoM"]; // Add this line
     
         var popupContent = "<div class='popup-container'>" +
             "<div class='popup-header'>" + countyName + "</div>";
@@ -1091,6 +1120,10 @@
             popupContent += "<div class='popup-body'><span class='density-label'>Home Growth YoY:</span> <span class='popup-value'>" + parseFloat(homegrowthYoY).toFixed(2) + "%</span></div>";
         } else if (currentPriceType === 'homegrowthMoM' && homegrowthMoM) { // Add this block
             popupContent += "<div class='popup-body'><span class='density-label'>Home Growth MoM:</span> <span class='popup-value'>" + parseFloat(homegrowthMoM).toFixed(2) + "%</span></div>";
+        } else if (currentPriceType === 'rentgrowthYoY' && rentgrowthYoY) { // Add this block
+            popupContent += "<div class='popup-body'><span class='density-label'>Rent Growth YoY:</span> <span class='popup-value'>" + parseFloat(rentgrowthYoY).toFixed(2) + "%</span></div>";
+        } else if (currentPriceType === 'rentgrowthMoM' && rentgrowthMoM) { // Add this block
+            popupContent += "<div class='popup-body'><span class='density-label'>Rent Growth MoM:</span> <span class='popup-value'>" + parseFloat(rentgrowthMoM).toFixed(2) + "%</span></div>";
         }
     
         popupContent += "</div>"; // Close the popup-container div
@@ -1117,9 +1150,9 @@
             label = 'For Sale Inventory';
         } else if (type === 'rent') {
             label = 'Rent Prices';
-        } else if (type === 'rentalgrowthYoY') {
+        } else if (type === 'rentgrowthYoY') {
             label = 'Rental Growth YoY';
-        } else if (type === 'rentalgrowthMoM') {
+        } else if (type === 'rentgrowthMoM') {
             label = 'Rental Growth MoM';
         } else if (type === 'rentalvacancy') {
             label = 'Rental Vacancy';
@@ -1171,12 +1204,12 @@
             grades = [400, 2500];
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
             isDollarValue = true;
-        } else if (type === 'rentalgrowthYoY') {
-            grades = [1, 5];
+        } else if (type === 'rentgrowthYoY') {
+            grades = [-10, 10];
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
             isPercentageValue = true;
-        } else if (type === 'rentalgrowthMoM') {
-            grades = [1, 5];
+        } else if (type === 'rentgrowthMoM') {
+            grades = [-2, 2];
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
             isPercentageValue = true;
         } else if (type === 'rentalvacancy') {
