@@ -925,17 +925,17 @@
         function style(feature) {
             var value;
             if (currentPriceType === 'priceToIncome') {
-                var homePrice = feature.properties["ZillowHomePrices CSV_homePrices"];
+                var homePrice = feature.properties["HomePrices"];
                 var medianIncome = feature.properties["medianincome_MedianIncome"];
                 value = medianIncome > 0 ? homePrice / medianIncome : 0;
             } else if (currentPriceType === 'home') {
-                value = feature.properties["ZillowHomePrices CSV_homePrices"];
+                value = feature.properties["HomePrices"];
             } else if (currentPriceType === 'rent') {
                 value = feature.properties["Zillow RentPrices _rentPrices"];
             } else if (currentPriceType === 'income') {
                 value = feature.properties["medianincome_MedianIncome"];
             } else if (currentPriceType === 'rentalYield') {
-                var homePrice = feature.properties["ZillowHomePrices CSV_homePrices"];
+                var homePrice = feature.properties["HomePrices"];
                 var rentPrice = feature.properties["Zillow RentPrices _rentPrices"];
                 value = homePrice && rentPrice ? (rentPrice / homePrice) * 100 : 0;
             } else if (currentPriceType === 'unemployment') {
@@ -978,7 +978,7 @@
                 // Determine the value based on the currentPriceType
                 var value;
                 if (currentPriceType === 'home') {
-                    value = feature.properties["ZillowHomePrices CSV_homePrices"];
+                    value = feature.properties["HomePrices"];
                 } else if (currentPriceType === 'rent') {
                     value = feature.properties["Zillow RentPrices _rentPrices"];
                 } else if (currentPriceType === 'income') {
@@ -1025,7 +1025,7 @@
                         var latlng = e.latlng;
                         var value;
                         if (currentPriceType === 'home') {
-                            value = layer.feature.properties["ZillowHomePrices CSV_homePrices"];
+                            value = layer.feature.properties["HomePrices"];
                         } else if (currentPriceType === 'rent') {
                             value = layer.feature.properties["Zillow RentPrices _rentPrices"];
                         } else if (currentPriceType === 'income') {
@@ -1033,11 +1033,11 @@
                         } else if (currentPriceType === 'unemployment') {
                             value = layer.feature.properties["unemploymentrate_Uemployment"];
                         } else if (currentPriceType === 'priceToIncome') {
-                            var homePrice = layer.feature.properties["ZillowHomePrices CSV_homePrices"];
+                            var homePrice = layer.feature.properties["HomePrices"];
                             var medianIncome = layer.feature.properties["medianincome_MedianIncome"];
                             value = medianIncome > 0 ? homePrice / medianIncome : 0;
                         } else if (currentPriceType === 'rentalYield') {
-                            var homePrice = layer.feature.properties["ZillowHomePrices CSV_homePrices"];
+                            var homePrice = layer.feature.properties["HomePrices"];
                             var rentPrice = layer.feature.properties["Zillow RentPrices _rentPrices"];
                             value = homePrice && rentPrice ? (rentPrice / homePrice) * 100 : 0;
                         }
@@ -1088,8 +1088,8 @@
     // Define updatePopupContent function
     function updatePopupContent(layer) {
         // Extract property values from the layer's feature
-        var countyName = layer.feature.properties.CountyNames_NAMECOUNTY;
-        var homePrice = layer.feature.properties["ZillowHomePrices CSV_homePrices"];
+        var countyName = layer.feature.properties.CountyNamesBase_NAMECOUNTY;
+        var homePrice = layer.feature.properties["HomePrices"];
         var rentPrice = layer.feature.properties["Zillow RentPrices _rentPrices"];
         var medianIncome = layer.feature.properties["medianincome_MedianIncome"];
         var unemploymentRate = layer.feature.properties["unemploymentrate_Uemployment"];
