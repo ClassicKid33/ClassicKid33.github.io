@@ -654,9 +654,9 @@
         </div>
         <div class="vertical-line"></div>
         <div class="layer-selection">
-            <label><input type="radio" name="layer-type" value="state" checked><span>State</span></label>
-            <label><input type="radio" name="layer-type" value="metro" checked><span>Metro</span></label>
-            <label><input type="radio" name="layer-type" value="county"><span>County</span></label>
+            <label><input type="radio" name="layer-type" value="state"><span>State</span></label>
+            <label><input type="radio" name="layer-type" value="metro"><span>Metro</span></label>
+            <label><input type="radio" name="layer-type" value="county" checked><span>County</span></label>
         </div>
         <div class="share-button">
             <button onclick="shareMap()">Share</button>
@@ -861,8 +861,8 @@
                        'transparent';
             }
             else if (type === 'rentalYield') {
-                return value > 1.1 ? '#fe0100' :
-                       value > 0.9 ? '#ff8174' :
+                return value > 0.9 ? '#fe0100' :
+                       value > 0.8 ? '#ff8174' :
                        value > 0.7 ? '#fedfd7' :
                        value > 0.5 ? '#FFFFFF' :
                        value > 0.4 ? '#d9daf8' :
@@ -931,12 +931,12 @@
             } else if (currentPriceType === 'home') {
                 value = feature.properties["HomePrices"];
             } else if (currentPriceType === 'rent') {
-                value = feature.properties["Zillow RentPrices _rentPrices"];
+                value = feature.properties["RentPrices"];
             } else if (currentPriceType === 'income') {
                 value = feature.properties["medianincome_MedianIncome"];
             } else if (currentPriceType === 'rentalYield') {
                 var homePrice = feature.properties["HomePrices"];
-                var rentPrice = feature.properties["Zillow RentPrices _rentPrices"];
+                var rentPrice = feature.properties["RentPrices"];
                 value = homePrice && rentPrice ? (rentPrice / homePrice) * 100 : 0;
             } else if (currentPriceType === 'unemployment') {
                 value = feature.properties["unemploymentrate_Uemployment"];
@@ -980,7 +980,7 @@
                 if (currentPriceType === 'home') {
                     value = feature.properties["HomePrices"];
                 } else if (currentPriceType === 'rent') {
-                    value = feature.properties["Zillow RentPrices _rentPrices"];
+                    value = feature.properties["RentPrices"];
                 } else if (currentPriceType === 'income') {
                     value = feature.properties["medianincome_MedianIncome"];
                 } else if (currentPriceType === 'unemployment') { // Added condition for unemployment
@@ -1027,7 +1027,7 @@
                         if (currentPriceType === 'home') {
                             value = layer.feature.properties["HomePrices"];
                         } else if (currentPriceType === 'rent') {
-                            value = layer.feature.properties["Zillow RentPrices _rentPrices"];
+                            value = layer.feature.properties["RentPrices"];
                         } else if (currentPriceType === 'income') {
                             value = layer.feature.properties["medianincome_MedianIncome"];
                         } else if (currentPriceType === 'unemployment') {
@@ -1038,7 +1038,7 @@
                             value = medianIncome > 0 ? homePrice / medianIncome : 0;
                         } else if (currentPriceType === 'rentalYield') {
                             var homePrice = layer.feature.properties["HomePrices"];
-                            var rentPrice = layer.feature.properties["Zillow RentPrices _rentPrices"];
+                            var rentPrice = layer.feature.properties["RentPrices"];
                             value = homePrice && rentPrice ? (rentPrice / homePrice) * 100 : 0;
                         }
             
@@ -1090,7 +1090,7 @@
         // Extract property values from the layer's feature
         var countyName = layer.feature.properties.CountyNamesBase_NAMECOUNTY;
         var homePrice = layer.feature.properties["HomePrices"];
-        var rentPrice = layer.feature.properties["Zillow RentPrices _rentPrices"];
+        var rentPrice = layer.feature.properties["RentPrices"];
         var medianIncome = layer.feature.properties["medianincome_MedianIncome"];
         var unemploymentRate = layer.feature.properties["unemploymentrate_Uemployment"];
         var homegrowthYoY = layer.feature.properties["homegrowthYoY"]; // Add this line
