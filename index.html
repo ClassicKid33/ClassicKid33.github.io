@@ -886,8 +886,8 @@
                        value > 2 ? '#fedfd7' :
                        value > 0 ? '#FFFFFF' :
                        value > -2 ? '#d9daf8' :
-                       value > -5 ? '#9296fa' :
-                       value > -10 ? '#0000ff' :
+                       value > -10 ? '#9296fa' :
+                       value > -20 ? '#0000ff' :
                        'transparent';
             } else if (type === 'homegrowthMoM') {
                 return value > 2 ? '#fe0100' :
@@ -895,8 +895,8 @@
                        value > 0.5 ? '#fedfd7' :
                        value > 0 ? '#FFFFFF' :
                        value > -0.5 ? '#d9daf8' :
-                       value > -1 ? '#9296fa' :
-                       value > -2 ? '#0000ff' :
+                       value > -0.75 ? '#9296fa' :
+                       value > -1 ? '#0000ff' :
                        'transparent';
             }
             else if (type === 'rentgrowthYoY') {
