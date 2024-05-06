@@ -49,7 +49,7 @@ df['rentgrowthYoY'] = ((df[column_name] - df[prev_year_column_name]) / df[prev_y
 df['rentgrowthMoM'] = ((df[column_name] - df[prev_month_column_name]) / df[prev_month_column_name]) * 100
 
 # Read the GeoJSON file
-with open('NewBasemapcopy.geojson') as file:
+with open('NewBasemapcopy1.geojson') as file:
     geojson_data = json.load(file)
 
 # Create a dictionary to store the rent prices keyed by GEO_ID
@@ -89,5 +89,5 @@ for feature in geojson_data['features']:
         feature['properties']['rentgrowthMoM'] = None
 
 # Overwrite the existing GeoJSON file with the updated data
-with open('NewBasemapcopy.geojson', 'w') as file:
+with open('NewBasemapcopy1.geojson', 'w') as file:
     json.dump(geojson_data, file, indent=1)
