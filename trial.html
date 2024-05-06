@@ -13,7 +13,7 @@
     crossorigin=""></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.1/chroma.min.js"></script>
-    <script src="NewBasemapcopy.geojson"></script>
+    <script src="NewBasemapcopy1.geojson"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.76.1/dist/L.Control.Locate.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.76.1/dist/L.Control.Locate.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
@@ -605,7 +605,7 @@
                     <li><label><input type="radio" name="price-type" value="homegrowthYoY"><span>Home Growth YoY</span></label></li>
                     <li><label><input type="radio" name="price-type" value="homegrowthMoM"><span>Home Growth MoM</span></label></li>
                     <li><label><input type="radio" name="price-type" value="homesales"><span>Monthly Home Sales</span></label></li>
-                    <li><label><input type="radio" name="price-type" value="inventory"><span>For Sale Inventory</span></label></li>
+                    <li><label><input type="radio" name="price-type" value="HousingInventory"><span>For Sale Inventory</span></label></li>
                 </ul>
             </div>
         </div>
@@ -917,6 +917,24 @@
                        value > -1 ? '#9296fa' :
                        value > -2 ? '#0000ff' :
                        'transparent';
+            } else if (type === 'rentgrowthMoM') {
+                return value > 1000 ? '#fe0100' :
+                       value > 800 ? '#ff8174' :
+                       value > 600 ? '#fedfd7' :
+                       value > 400 ? '#FFFFFF' :
+                       value > 200 ? '#d9daf8' :
+                       value > 50 ? '#9296fa' :
+                       value > 10 ? '#0000ff' :
+                       'transparent';
+            } else if (type === 'HousingInventory') {
+                return value > 1000 ? '#fe0100' :
+                       value > 800 ? '#ff8174' :
+                       value > 600 ? '#fedfd7' :
+                       value > 400 ? '#FFFFFF' :
+                       value > 200 ? '#d9daf8' :
+                       value > 50 ? '#9296fa' :
+                       value > 10 ? '#0000ff' :
+                       'transparent';
             }
         }
         
@@ -948,6 +966,8 @@
                 value = feature.properties["rentgrowthYoY"];
             } else if (currentPriceType === 'rentgrowthMoM') {
                 value = feature.properties["rentgrowthMoM"];
+            } else if (currentPriceType === 'HousingInventory') {
+                value = feature.properties["HousingInventory"];
             }
 
             // Check if the value is undefined, null, or any other value that indicates the absence of information
@@ -973,7 +993,7 @@
      // Define map, tiles, popup, and countiesLayer variables
 
      function loadData() {
-        countiesLayer = L.geoJSON.ajax('NewBasemapcopy.geojson', {
+        countiesLayer = L.geoJSON.ajax('NewBasemapcopy1.geojson', {
             style: function(feature) {
                 // Determine the value based on the currentPriceType
                 var value;
@@ -993,6 +1013,8 @@
                     value = feature.properties["rentgrowthYoY"];
                 } else if (currentPriceType === 'rentgrowthMoM') { // Add this block
                     value = feature.properties["rentgrowthMoM"];
+                } else if (currentPriceType === 'HousingInventory') { // Add this block
+                    value = feature.properties["HousingInventory"];
                 }
 
                 // Check if the value is undefined, null, or any other value that indicates the absence of information
@@ -1097,6 +1119,7 @@
         var homegrowthMoM = layer.feature.properties["homegrowthMoM"]; // Add this line
         var rentgrowthYoY = layer.feature.properties["rentgrowthYoY"]; // Add this line
         var rentgrowthMoM = layer.feature.properties["rentgrowthMoM"]; // Add this line
+        var HousingInventory = layer.feature.properties["HousingInventory"]; // Add this line
     
         var popupContent = "<div class='popup-container'>" +
             "<div class='popup-header'>" + countyName + "</div>";
@@ -1124,6 +1147,8 @@
             popupContent += "<div class='popup-body'><span class='density-label'>Rent Growth YoY:</span> <span class='popup-value'>" + parseFloat(rentgrowthYoY).toFixed(2) + "%</span></div>";
         } else if (currentPriceType === 'rentgrowthMoM' && rentgrowthMoM) { // Add this block
             popupContent += "<div class='popup-body'><span class='density-label'>Rent Growth MoM:</span> <span class='popup-value'>" + parseFloat(rentgrowthMoM).toFixed(2) + "%</span></div>";
+        } else if (currentPriceType === 'HousingInventory' && HousingInventory) { // Add this block
+            popupContent += "<div class='popup-body'><span class='density-label'>For Sale Inventory:</span> <span class='popup-value'>" + parseInt(HousingInventory).toLocaleString() + "</span></div>";
         }
     
         popupContent += "</div>"; // Close the popup-container div
@@ -1146,7 +1171,7 @@
             label = 'Home Growth YoY';
         } else if (type === 'homegrowthMoM') {
             label = 'Home Growth MoM';
-        } else if (type === 'inventory') {
+        } else if (type === 'HousingInventory') {
             label = 'For Sale Inventory';
         } else if (type === 'rent') {
             label = 'Rent Prices';
@@ -1174,6 +1199,8 @@
             label = 'Rental Yield';
         } else if (type === 'unemployment') {
             label = 'Unemployment Rate';
+        } else if (type === 'HousingInventory') {
+            label = 'For Sale Inventory';
         }
         return label;
     }
@@ -1197,7 +1224,7 @@
             grades = [-2, 2];
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
             isPercentageValue = true;
-        } else if (type === 'inventory') {
+        } else if (type === 'HousingInventory') {
             grades = [300, 1000];
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
         } else if (type === 'rent') {
@@ -1225,6 +1252,9 @@
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
         } else if (type === 'population') {
             grades = [50000, 5000000];
+            colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
+        } else if (type === 'HousingInventory') {
+            grades = [10, 1000];
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
         } else if (type === 'populationgrowthYoY') {
             grades = [1, 5];
