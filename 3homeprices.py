@@ -12,6 +12,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 import logging
+from webdriver_manager.chrome import ChromeDriverManager
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -32,8 +33,8 @@ try:
     prefs = {"download.default_directory": download_dir}
     chrome_options.add_experimental_option("prefs", prefs)
 
-    # Set up the WebDriver
-    service = Service('/path/to/chromedriver')  # Update with the path to your ChromeDriver
+    # Set up the WebDriver using ChromeDriverManager
+    service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=chrome_options)
 
     try:
@@ -151,7 +152,7 @@ try:
                 # Update or add the home price growth rate MoM to the GeoJSON feature properties, formatted with two decimal places
                 feature['properties']['homegrowthMoM'] = round(home_growth_rates_mom[geo_id], 2) if home_growth_rates_mom[geo_id] is not None else None
             else:
-                                # Set the home price growth rate MoM to null if there is no corresponding value
+                # Set the home price growth rate MoM to null if there is no corresponding value
                 feature['properties']['homegrowthMoM'] = None
         else:
             # Set the home price value and growth rates to null if there is no corresponding value
@@ -161,7 +162,7 @@ try:
 
     # Overwrite the existing GeoJSON file with the updated data
     with open('NewBasemapcopy1.geojson', 'w') as file:
-        json.dump(geojson_data, file, indent=2)
+                json.dump(geojson_data, file, indent=2)
 
     logging.info("GeoJSON file updated successfully.")
 
