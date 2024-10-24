@@ -20,7 +20,10 @@
     <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css">
     <script src="https://unpkg.com/esri-leaflet/dist/esri-leaflet.js"></script>
     <script src="https://unpkg.com/esri-leaflet-geocoder/dist/esri-leaflet-geocoder.js"></script>
-
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@2.0.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/date-fns@2.21.1"></script>
     
     <style>
         * {
@@ -586,6 +589,18 @@
             top: 5px; /* Adjust the top position of the zoom control */
         }
 
+        #chart-container {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 400px;
+            height: 300px;
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 10px;
+            display: none; /* Initially hidden */
+        }
+
     </style>
 </head>
 <body>
@@ -670,11 +685,10 @@
         </div>
     </div>
     
-    
-    
-    
-    
     <div id="map"></div>
+    <div id="chart-container">
+        <canvas id="chart"></canvas>
+    </div>
 
     <script>
 
@@ -990,7 +1004,64 @@
                 fillOpacity: 0.4
             };
         }
-     // Define map, tiles, popup, and countiesLayer variables
+     
+     // Load the CSV data
+     let homePricesData;
+     d3.csv("home_prices.csv").then(data => {
+         homePricesData = data;
+     });
+
+     let chartInstance; // Declare a variable to hold the chart instance
+
+     function displayChart(countyName) {
+        const countyData = homePricesData.filter(d => d.county === countyName);
+        const labels = countyData.map(d => new Date(d.date).toLocaleDateString()); // Format dates using toLocaleDateString()
+        const prices = countyData.map(d => d.price);
+    
+        const ctx = document.getElementById('chart').getContext('2d');
+    
+        // Destroy the existing chart instance if it exists
+        if (chartInstance) {
+            chartInstance.destroy();
+        }
+    
+        // Create a new chart instance
+        chartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Home Prices',
+                    data: prices,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        type: 'time',
+                        time: {
+                            unit: 'month'
+                        },
+                        adapters: {
+                            date: {
+                                locale: 'en-US'
+                            }
+                        }
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    
+        // Show the chart container
+        document.getElementById('chart-container').style.display = 'block';
+    }
+ 
+        // Define map, tiles, popup, and countiesLayer variables
 
      function loadData() {
         countiesLayer = L.geoJSON.ajax('NewBasemapcopy1.geojson', {
@@ -1096,7 +1167,9 @@
                     },
                     click: function(e) {
                         var layer = e.target;
-                        map.fitBounds(layer.getBounds());
+                        // map.fitBounds(layer.getBounds()); // Comment out or remove this line
+                        const countyName = layer.feature.properties.CountyNamesBase_NAMECOUNTY;
+                        displayChart(countyName);
                     }
                 });
             }
