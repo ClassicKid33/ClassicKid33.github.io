@@ -70,7 +70,7 @@ def add_demographics_to_geojson(excel_path: str, geojson_path: str):
 if __name__ == "__main__":
     # Adjust these paths/files as needed
     excel_file = "Demographics.xlsx"
-    geojson_file = "NewBasemapcopy.geojson"
+    geojson_file = "NewBasemapcopy1.geojson"
     
     add_demographics_to_geojson(excel_file, geojson_file)
     print("Demographics added to GeoJSON successfully!")
