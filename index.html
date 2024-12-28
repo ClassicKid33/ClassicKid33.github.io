@@ -20,7 +20,10 @@
     <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css">
     <script src="https://unpkg.com/esri-leaflet/dist/esri-leaflet.js"></script>
     <script src="https://unpkg.com/esri-leaflet-geocoder/dist/esri-leaflet-geocoder.js"></script>
-
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@2.0.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/date-fns@2.21.1"></script>
     
     <style>
         * {
@@ -586,6 +589,18 @@
             top: 5px; /* Adjust the top position of the zoom control */
         }
 
+        #chart-container {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 400px;
+            height: 300px;
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 10px;
+            display: none; /* Initially hidden */
+        }
+
     </style>
 </head>
 <body>
@@ -604,6 +619,7 @@
                     <li><label><input type="radio" name="price-type" value="home" checked><span>Home Prices</span></label></li>
                     <li><label><input type="radio" name="price-type" value="homegrowthYoY"><span>Home Growth YoY</span></label></li>
                     <li><label><input type="radio" name="price-type" value="homegrowthMoM"><span>Home Growth MoM</span></label></li>
+                    <li><label><input type="radio" name="price-type" value="priceToIncome"><span>Price to Income Ratio</span></label></li>
                     <li><label><input type="radio" name="price-type" value="homesales"><span>Monthly Home Sales</span></label></li>
                     <li><label><input type="radio" name="price-type" value="HousingInventory"><span>For Sale Inventory</span></label></li>
                 </ul>
@@ -626,8 +642,7 @@
             <div class="section-content">
                 <ul>
                     <li><label><input type="radio" name="price-type" value="income"><span>Median Income</span></label></li>
-                    <li><label><input type="radio" name="price-type" value="priceToIncome"><span>Price to Income Ratio</span></label></li>
-                    <li><label><input type="radio" name="price-type" value="population"><span>Population</span></label></li>
+                    <li><label><input type="radio" name="price-type" value="white_percentage"><span>White Population</span></label></li>
                     <li><label><input type="radio" name="price-type" value="populationgrowthYoY"><span>Population Growth YoY</span></label></li>
                     <li><label><input type="radio" name="price-type" value="netmigration"><span>Net Migration</span></label></li>
                 </ul>
@@ -670,11 +685,10 @@
         </div>
     </div>
     
-    
-    
-    
-    
     <div id="map"></div>
+    <div id="chart-container">
+        <canvas id="chart"></canvas>
+    </div>
 
     <script>
 
@@ -936,6 +950,16 @@
                        value > 10 ? '#0000ff' :
                        'transparent';
             }
+            else if (type === 'white_percentage') {
+                return value > 90 ? '#fe0100' :
+                       value > 80 ? '#ff8174' :
+                       value > 70 ? '#fedfd7' :
+                       value > 60 ? '#FFFFFF' :
+                       value > 50 ? '#d9daf8' :
+                       value > 40 ? '#9296fa' :
+                       value > 30 ? '#0000ff' :
+                       'transparent';
+            }
         }
         
         
@@ -968,6 +992,8 @@
                 value = feature.properties["rentgrowthMoM"];
             } else if (currentPriceType === 'HousingInventory') {
                 value = feature.properties["HousingInventory"];
+            } else if (currentPriceType === 'white_percentage') {
+                value = feature.properties.demographics["white_percentage"];
             }
 
             // Check if the value is undefined, null, or any other value that indicates the absence of information
@@ -990,7 +1016,64 @@
                 fillOpacity: 0.4
             };
         }
-     // Define map, tiles, popup, and countiesLayer variables
+     
+     // Load the CSV data
+     let homePricesData;
+     d3.csv("home_prices.csv").then(data => {
+         homePricesData = data;
+     });
+
+     let chartInstance; // Declare a variable to hold the chart instance
+
+     function displayChart(countyName) {
+        const countyData = homePricesData.filter(d => d.county === countyName);
+        const labels = countyData.map(d => new Date(d.date).toLocaleDateString()); // Format dates using toLocaleDateString()
+        const prices = countyData.map(d => d.price);
+    
+        const ctx = document.getElementById('chart').getContext('2d');
+    
+        // Destroy the existing chart instance if it exists
+        if (chartInstance) {
+            chartInstance.destroy();
+        }
+    
+        // Create a new chart instance
+        chartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Home Prices',
+                    data: prices,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        type: 'time',
+                        time: {
+                            unit: 'month'
+                        },
+                        adapters: {
+                            date: {
+                                locale: 'en-US'
+                            }
+                        }
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    
+        // Show the chart container
+        document.getElementById('chart-container').style.display = 'block';
+    }
+ 
+        // Define map, tiles, popup, and countiesLayer variables
 
      function loadData() {
         countiesLayer = L.geoJSON.ajax('NewBasemapcopy1.geojson', {
@@ -1062,6 +1145,10 @@
                             var homePrice = layer.feature.properties["HomePrices"];
                             var rentPrice = layer.feature.properties["RentPrices"];
                             value = homePrice && rentPrice ? (rentPrice / homePrice) * 100 : 0;
+                        } else if (currentPriceType === 'white_percentage' &&
+                        layer.feature.properties.demographics &&
+                        layer.feature.properties.demographics.white_percentage) {
+                            value = layer.feature.properties.demographics.white_percentage;
                         }
             
                         // Check if the county has no data
@@ -1096,7 +1183,9 @@
                     },
                     click: function(e) {
                         var layer = e.target;
-                        map.fitBounds(layer.getBounds());
+                        // map.fitBounds(layer.getBounds()); // Comment out or remove this line
+                        const countyName = layer.feature.properties.CountyNamesBase_NAMECOUNTY;
+                        displayChart(countyName);
                     }
                 });
             }
@@ -1120,6 +1209,7 @@
         var rentgrowthYoY = layer.feature.properties["rentgrowthYoY"]; // Add this line
         var rentgrowthMoM = layer.feature.properties["rentgrowthMoM"]; // Add this line
         var HousingInventory = layer.feature.properties["HousingInventory"]; // Add this line
+        var white_percentage = layer.feature.properties.demographics["white_percentage"]; // Add this line
     
         var popupContent = "<div class='popup-container'>" +
             "<div class='popup-header'>" + countyName + "</div>";
@@ -1149,6 +1239,8 @@
             popupContent += "<div class='popup-body'><span class='density-label'>Rent Growth MoM:</span> <span class='popup-value'>" + parseFloat(rentgrowthMoM).toFixed(2) + "%</span></div>";
         } else if (currentPriceType === 'HousingInventory' && HousingInventory) { // Add this block
             popupContent += "<div class='popup-body'><span class='density-label'>For Sale Inventory:</span> <span class='popup-value'>" + parseInt(HousingInventory).toLocaleString() + "</span></div>";
+        } else if (currentPriceType === 'white_percentage' && white_percentage) { // Add this block
+            popupContent += "<div class='popup-body'><span class='density-label'>White Population:</span> <span class='popup-value'>" + parseFloat(white_percentage).toFixed(2) + "%</span></div>";
         }
     
         popupContent += "</div>"; // Close the popup-container div
@@ -1185,8 +1277,8 @@
             label = 'Median Income';
         } else if (type === 'priceToIncome') {
             label = 'Price to Income Ratio';
-        } else if (type === 'population') {
-            label = 'Population';
+        } else if (type === 'white_percentage') {
+            label = 'White Percentage';
         } else if (type === 'populationgrowthYoY') {
             label = 'Population Growth YoY';
         } else if (type === 'netmigration') {
@@ -1250,8 +1342,8 @@
         } else if (type === 'priceToIncome') {
             grades = [1, 10];
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
-        } else if (type === 'population') {
-            grades = [50000, 5000000];
+        } else if (type === 'white_percentage') {
+            grades = [30, 90];
             colors = ['#0000ff', '#9296fa', '#FFFFFF', '#ff8174', '#fe0100'];
         } else if (type === 'HousingInventory') {
             grades = [10, 1000];
